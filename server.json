@@ -1,0 +1,11 @@
+{
+    "name":"Blog_Server",
+    "web":{
+        "http":{
+            "port":64422
+        },
+        "rewrites":{
+            "enable":true
+        }
+    }
+}
