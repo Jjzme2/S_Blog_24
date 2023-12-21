@@ -123,9 +123,17 @@
 					,t.name as title
 					,t.description
 					,t.body_content as bodyContent
-
+					,t.intent as intent
+					,(SELECT JSON_OBJECT(
+						'name', c.name,
+						'id', c.id
+						)
+					FROM post_categories AS c
+					WHERE c.id = t.category_id
+					) AS category
 				FROM #tableName# t
-
+				LEFT JOIN post_categories c
+					ON t.category_id = c.id
 				<cfif arguments.exactMatch>
 					WHERE #searchTerm# = <cfqueryparam value="#searchValue#" cfsqltype="#sqlType#">
 						<cfif arguments.searchTerm NEQ 'active'>
@@ -137,6 +145,14 @@
 						AND t.active = <cfqueryparam value="#!arguments.showInactive#" cfsqltype="cf_sql_bit">
 					</cfif>
 				</cfif>
+				GROUP BY t.id
+					,t.created_on
+					,t.modified_on
+					,t.active
+					,t.name
+					,t.description
+					,t.body_content
+					,t.intent
 			</cfquery>
 
 			<cfcatch type="any">

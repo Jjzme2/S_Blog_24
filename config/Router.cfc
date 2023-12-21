@@ -39,6 +39,10 @@ component {
 			}
 			,function ( ) {
 				get(
+					'/empty'
+					,'getEmpty'
+				)
+				get(
 					 '/'
 					,'index'
 				)

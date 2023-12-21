@@ -68,5 +68,8 @@ component extends = "coldbox.system.RestHandler" {
 			.addMessage( message )
 			.setStatusCode( statusCode );
 	}
-
+	remote function getEmpty( event, rc, prc ){
+		var dataObject = dataServer.getEmpty( dataServerName=variables.dataServerName );
+		event.renderData( type="json", data=dataObject.read() );
+	}
 }

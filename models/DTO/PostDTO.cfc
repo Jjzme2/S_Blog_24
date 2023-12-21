@@ -21,6 +21,9 @@ component accessors="true" {
 
 	// Unique Properties
 	property name="bodyContent" type="string";
+	property name="intent" type="string";
+	property name="category" type="any";
+
 
 	/**
 	 * --------------------------------------------------------------------------
@@ -43,7 +46,9 @@ component accessors="true" {
 		active:			{ required : true, type : "boolean"},
 		title:			{ required : true, type : "string"},
 		description:	{ required : true, type : "string"},
-		bodyContent:	{ required : true, type : "string"}
+		bodyContent:	{ required : true, type : "string"},
+		intent:			{ required : true, type : "string"},
+		category:		{ required : true, type : "any"}
 	};
 
 	/**
@@ -59,7 +64,9 @@ component accessors="true" {
 			"active",
 			"title",
 			"description",
-			"bodyContent"
+			"bodyContent",
+			"intent",
+			"category"
 		]
 	}
 
@@ -74,6 +81,8 @@ component accessors="true" {
 		setTitle("");
 		setDescription("");
 		setBodyContent("");
+		setIntent("");
+		setCategory({'name': "General", 'id': "c32a6cb6-943d-48aa-bae0-c9751b19e17a"});
 		return this;
 	}
 
@@ -93,18 +102,23 @@ component accessors="true" {
 			'active':		getActive(),
 			'title':		getTitle(),
 			'description':	getDescription(),
-			'bodyContent':	getBodyContent()
+			'bodyContent':	getBodyContent(),
+			'intent':		getIntent(),
+			'category':		getCategory()
 		};
 	}
 
 	string function getCSV() {
-		return getID() & "," &
+		return
+			getID() & "," &
 			getCreatedOn() & "," &
 			getModifiedOn() & "," &
 			getActive() & "," &
 			getTitle() & "," &
 			getDescription() & "," &
-			getBodyContent();
+			getBodyContent() & "," &
+			getIntent() & "," &
+			getCategory();
 	}
 
 	string function getJSON() {
@@ -119,7 +133,17 @@ component accessors="true" {
 			'active',
 			'title',
 			'description',
-			'bodyContent'
+			'bodyContent',
+			'intent',
+			'category'
 		];
+	}
+
+	void function activate(){
+		setActive(true);
+	}
+
+	void function deactivate(){
+		setActive(false);
 	}
 }

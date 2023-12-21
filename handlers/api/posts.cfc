@@ -108,13 +108,7 @@ component extends="../BaseHandler" {
 				// ,error=serverResponse.getErrorStruct())
 				.dump();
 		}
-	}
-
-
-	remote function getEmpty( event, rc, prc ){
-		var dataObject = dataServer.getEmpty( dataServerName=variables.dataServerName );
-		event.renderData( type="json", data=dataObject.read() );
-	}
+	}s
 
 
 	remote function getPostById( event, rc, prc ){
