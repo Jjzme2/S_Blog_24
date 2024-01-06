@@ -23,19 +23,22 @@ component extends="coldbox.system.testing.BaseTestCase" autowire {
 
 				// Make sure nothing is logged in to start our calls
 				cbauth.logout();
-				jwtService.getTokenStorage().clearAll();
+				jwtService
+					.getTokenStorage()
+					.clearAll();
 			} );
 
 			story( "I want to authenticate a user and receive a JWT token", function(){
 				given( "a valid username and password", function(){
 					then( "I will be authenticated and will receive the JWT token", function(){
 						// Use a user in the seeded db
-						var event = this.post(
-							route  = "/api/login",
-							params = { username : "admin", password : "admin" }
-						);
+						var event    = this.post( route = "/api/login", params = { username : "admin", password : "admin" } );
 						var response = event.getPrivateValue( "Response" );
-						expect( response.getError() ).toBeFalse( response.getMessages().toString() );
+						expect( response.getError() ).toBeFalse(
+							response
+								.getMessages()
+								.toString()
+						);
 						expect( response.getData() ).toBeString();
 
 						// debug( response.getData() );
@@ -47,10 +50,7 @@ component extends="coldbox.system.testing.BaseTestCase" autowire {
 				} );
 				given( "invalid username and password", function(){
 					then( "I will receive a 401 exception ", function(){
-						var event = this.post(
-							route  = "/api/login",
-							params = { username : "invalid", password : "invalid" }
-						);
+						var event    = this.post( route = "/api/login", params = { username : "invalid", password : "invalid" } );
 						var response = event.getPrivateValue( "Response" );
 						expect( response.getError() ).toBeTrue();
 						expect( response.getStatusCode() ).toBe( 401 );
@@ -72,13 +72,26 @@ component extends="coldbox.system.testing.BaseTestCase" autowire {
 							}
 						);
 						var response = event.getPrivateValue( "Response" );
-						expect( response.getError() ).toBeFalse( response.getMessages().toString() );
+						expect( response.getError() ).toBeFalse(
+							response
+								.getMessages()
+								.toString()
+						);
 						expect( response.getData() ).toHaveKey( "token,user" );
 
 						// debug( response.getData() );
 
-						var decoded = jwtService.decode( response.getData().token );
-						expect( decoded.sub ).toBe( response.getData().user.id );
+						var decoded = jwtService.decode(
+							response
+								.getData()
+								.token
+						);
+						expect( decoded.sub ).toBe(
+							response
+								.getData()
+								.user
+								.id
+						);
 						expect( decoded.exp ).toBeGTE( dateAdd( "h", 1, decoded.iat ) );
 					} );
 				} );
@@ -105,7 +118,11 @@ component extends="coldbox.system.testing.BaseTestCase" autowire {
 						var event = this.post( route = "/api/logout", params = { "x-auth-token" : token } );
 
 						var response = event.getPrivateValue( "Response" );
-						expect( response.getError() ).toBeFalse( response.getMessages().toString() );
+						expect( response.getError() ).toBeFalse(
+							response
+								.getMessages()
+								.toString()
+						);
 						expect( response.getStatusCode() ).toBe( 200 );
 						expect( cbauth.isLoggedIn() ).toBeFalse();
 					} );
@@ -116,7 +133,11 @@ component extends="coldbox.system.testing.BaseTestCase" autowire {
 						var event = this.post( route = "/api/logout", params = { "x-auth-token" : "123" } );
 
 						var response = event.getPrivateValue( "Response" );
-						expect( response.getError() ).toBeTrue( response.getMessages().toString() );
+						expect( response.getError() ).toBeTrue(
+							response
+								.getMessages()
+								.toString()
+						);
 						// debug( response.getStatusCode( 500 ) );
 					} );
 				} );

@@ -5,7 +5,7 @@
  */
 component {
 
-	function configure ( ) {
+	function configure(){
 		/**
 		 * --------------------------------------------------------------------------
 		 * Router Configuration Directives
@@ -23,94 +23,72 @@ component {
 		 */
 
 		// A nice healthcheck route example
-		route( '/healthcheck', function (
-			 event
-			,rc
-			,prc
-		) {
-			return 'Ok!';
+		route( "/healthcheck", function( event, rc, prc ){
+			return "Ok!";
 		} );
 
+
+
+		/**
+		 * --------------------------------------------------------------------------
+		 * Server Routes
+		 * --------------------------------------------------------------------------
+		 * Here is where you can register the routes for your web server!
+		 */
+		group( { "pattern" : "/server/tests", "target" : "server.tests." }, function(){
+			route("/", "output" );
+		} );
+
+
+
+
+
+
+
+		/**
+		 * --------------------------------------------------------------------------
+		 * API Routes
+		 * --------------------------------------------------------------------------
+		 * Here is where you can register the routes for your API application!
+		 */
+
 		// *API Quotes
-		group(
-			 {
-				 'pattern': '/api/quotes'
-				,'target' : 'api.Quotes.'
-			}
-			,function ( ) {
-				get(
-					'/empty'
-					,'getEmpty'
-				)
-				get(
-					 '/'
-					,'index'
-				)
-				get(
-					 '/:id'
-					,'show'
-				)
-				post(
-					 '/'
-					,'create'
-				)
-				put(
-					 '/:id'
-					,'update'
-				)
-				delete(
-					 '/:id'
-					,'delete'
-				)
-				options(
-					 '/'
-					,'preflight'
-				)
-			}
-		);
+		group( { "pattern" : "/api/quotes", "target" : "api.Quotes." }, function(){
+			get( "/empty", "getEmpty" )
+			get( "/", "index" )
+			get( "/:id", "show" )
+			post( "/", "create" )
+			put( "/:id", "update" )
+			delete( "/:id", "delete" )
+			options( "/", "preflight" )
+		} );
 
 		// Posts
 
 		// *API Post
-		group(
-			 {
-				 'pattern': '/api/posts'
-				,'target' : 'api.Posts.'
-			}
-			,function ( ) {
-				get(
-					'/empty'
-					,'getEmpty'
-				)
-				get(
-					 '/show/:id'
-					,'showGoal'
-				)
-				get(
-					 '/'
-					,'index'
-				)
-				post(
-					 '/'
-					,'createNew'
-				)
-				put(
-					 '/:id'
-					,'update'
-				)
-				delete(
-					 '/:id'
-					,'delete'
-				)
-				options(
-					 '/'
-					,'preflight'
-				)
-			}
-		);
+		group( { "pattern" : "/api/posts", "target" : "api.Posts." }, function(){
+			get( "/empty", "getEmpty" )
+			get( "/show/:id", "showGoal" )
+			get( "/", "index" )
+			post( "/", "createNew" )
+			put( "/:id", "update" )
+			delete( "/:id", "delete" )
+			options( "/", "preflight" )
+		} );
+
+		// *API POST Categories
+		group( { "pattern" : "/api/postCategories", "target" : "api.PostCategories." }, function(){
+			get( "/empty", "getEmpty" )
+			get( "/", "index" )
+			get( "/:id", "show" )
+			post( "/", "create" )
+			put( "/:id", "update" )
+			delete( "/:id", "delete" )
+			options( "/", "preflight" )
+		} );
 
 		// Conventions-Based Routing
-		route( ':handler/:action?' ).end( );
+		route( ":handler/:action?" ).end();
 	}
 
 }

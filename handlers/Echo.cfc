@@ -21,7 +21,9 @@ component extends="coldbox.system.RestHandler" {
 	 * @response -default ~echo/index/responses.json##200
 	 */
 	function index( event, rc, prc ){
-		event.getResponse().setData( "Welcome to my ColdBox RESTFul Service" );
+		event
+			.getResponse()
+			.setData( "Welcome to my ColdBox RESTFul Service" );
 	}
 
 
@@ -34,7 +36,13 @@ component extends="coldbox.system.RestHandler" {
 	 * @response -401     ~echo/whoami/responses.json##401
 	 */
 	function whoami( event, rc, prc ) secured{
-		event.getResponse().setData( jwtAuth().getUser().getMemento() );
+		event
+			.getResponse()
+			.setData(
+				jwtAuth()
+					.getUser()
+					.getMemento()
+			);
 	}
 
 }

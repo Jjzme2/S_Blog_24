@@ -32,29 +32,29 @@ component accessors="true" {
 	 * --------------------------------------------------------------------------
 	 */
 	this.constraints = {
-		id:						{ required : true,  type : "string"},
-		amount:					{ required : true,  type : "numeric"},
-		categoryId:				{ required : true,  type : "string"},
-		description:			{ required : false, type : "string"},
-		postedDate:				{ required : true,  type : "date"},
-		note:					{ required : false, type : "string"}
+		id          : { required : true, type : "string" },
+		amount      : { required : true, type : "numeric" },
+		categoryId  : { required : true, type : "string" },
+		description : { required : false, type : "string" },
+		postedDate  : { required : true, type : "date" },
+		note        : { required : false, type : "string" }
 	};
 
 	/**
 	 * Constructor
 	 */
 	function init(){
-		setId(createUUID());
-		setAmount(0);
-		setCategoryId("");
-		setDescription("");
-		setPostedDate(Now());
-		setNote("");
+		setId( createUUID() );
+		setAmount( 0 );
+		setCategoryId( "" );
+		setDescription( "" );
+		setPostedDate( now() );
+		setNote( "" );
 		return this;
 	}
 
-	function isValid() {
-		return validate(this);
+	function isValid(){
+		return validate( this );
 	}
 
 }

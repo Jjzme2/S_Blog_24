@@ -57,17 +57,26 @@ component accessors="true" singleton {
 	 * @return The created user
 	 */
 	User function create( required user ){
-		arguments.user.setId( createUUID() );
+		arguments.user
+			.setId( createUUID() );
 
-		variables.mockUsers.append( {
-			"id"          : arguments.user.getId(),
-			"firstName"   : arguments.user.getFirstName(),
-			"lastName"    : arguments.user.getLastName(),
-			"username"    : arguments.user.getUsername(),
-			"password"    : arguments.user.getPassword(),
-			"roles"       : arguments.user.getRoles(),
-			"permissions" : arguments.user.getPermissions()
-		} );
+		variables.mockUsers
+			.append( {
+				"id" : arguments.user
+					.getId(),
+				"firstName" : arguments.user
+					.getFirstName(),
+				"lastName" : arguments.user
+					.getLastName(),
+				"username" : arguments.user
+					.getUsername(),
+				"password" : arguments.user
+					.getPassword(),
+				"roles" : arguments.user
+					.getRoles(),
+				"permissions" : arguments.user
+					.getPermissions()
+			} );
 		return arguments.user;
 	}
 
@@ -84,7 +93,11 @@ component accessors="true" singleton {
 		}
 
 		// Check Password Here: Remember to use bcrypt
-		return ( oTarget.getPassword().compareNoCase( arguments.password ) == 0 );
+		return (
+			oTarget
+				.getPassword()
+				.compareNoCase( arguments.password ) == 0
+		);
 	}
 
 	/**
@@ -98,11 +111,12 @@ component accessors="true" singleton {
 				return arguments.record.username == username;
 			} )
 			.reduce( function( result, record ){
-				return variables.populator.populateFromStruct(
-					target           : arguments.result,
-					memento          : arguments.record,
-					ignoreTargetLists: true
-				);
+				return variables.populator
+					.populateFromStruct(
+						target           : arguments.result,
+						memento          : arguments.record,
+						ignoreTargetLists: true
+					);
 			}, new () );
 	}
 
@@ -119,11 +133,12 @@ component accessors="true" singleton {
 				return arguments.record.id == id;
 			} )
 			.reduce( function( result, record ){
-				return variables.populator.populateFromStruct(
-					target           : arguments.result,
-					memento          : arguments.record,
-					ignoreTargetLists: true
-				);
+				return variables.populator
+					.populateFromStruct(
+						target           : arguments.result,
+						memento          : arguments.record,
+						ignoreTargetLists: true
+					);
 			}, new () );
 	}
 

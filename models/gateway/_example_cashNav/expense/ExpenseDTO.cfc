@@ -33,31 +33,31 @@ component accessors="true" {
 	 * --------------------------------------------------------------------------
 	 */
 	this.constraints = {
-		id:						{ required : true,  type : "string"},
-		amount:					{ required : true,  type : "numeric"},
-		categoryId:				{ required : true,  type : "string"},
-		description:			{ required : false, type : "string"},
-		dueDate:				{ required : true,  type : "date"},
-		note:					{ required : false, type : "string"},
-		isPaid:					{ required : false, type : "boolean"}
+		id          : { required : true, type : "string" },
+		amount      : { required : true, type : "numeric" },
+		categoryId  : { required : true, type : "string" },
+		description : { required : false, type : "string" },
+		dueDate     : { required : true, type : "date" },
+		note        : { required : false, type : "string" },
+		isPaid      : { required : false, type : "boolean" }
 	};
 
 	/**
 	 * Constructor
 	 */
 	function init(){
-		setId(createUUID());
-		setAmount(0);
-		setCategoryId("");
-		setDescription("");
-		setDueDate(Now());
-		setNote("");
-		setIsPaid(false);
+		setId( createUUID() );
+		setAmount( 0 );
+		setCategoryId( "" );
+		setDescription( "" );
+		setDueDate( now() );
+		setNote( "" );
+		setIsPaid( false );
 		return this;
 	}
 
-	function isValid() {
-		return validate(this);
+	function isValid(){
+		return validate( this );
 	}
 
 }

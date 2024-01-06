@@ -1,4 +1,4 @@
-component name = "ValidationService" {
+component name="ValidationService" {
 
 	/**
 	 * Checks a given struct by the keys provided.
@@ -8,21 +8,10 @@ component name = "ValidationService" {
 	 *
 	 * @return Boolean indicating whether the struct contains all the required keys.
 	 */
-	public boolean function ValidStruct (
-		 struct structToValidate
-		,array keysToCheck
-	) {
+	public boolean function ValidStruct( struct structToValidate, array keysToCheck ){
 		for ( var key in keysToCheck ) {
-			if (
-				!structKeyExists(
-					 structToValidate
-					,key
-				)
-			) {
-				throw(
-					 type    = 'ValidationException'
-					,message = '#key# is required'
-				);
+			if ( !structKeyExists( structToValidate, key ) ) {
+				throw( type = "ValidationException", message = "#key# is required" );
 			}
 		}
 		return true;

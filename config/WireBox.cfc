@@ -33,16 +33,17 @@
 		};
 
 		// Map Bindings below
-		mapDirectory( packagePath = '_gateway' );
-		mapDirectory( packagePath = 'models' );
-		mapDirectory( packagePath = 'services/utilities' );
+		mapDirectory( packagePath = "_gateway" );
+		mapDirectory( packagePath = "models" );
+		mapDirectory( packagePath = "services/utilities" );
 
 		// Map Object Bindings
-		map( 'ServerResponse' )
-			.to( 'models.ServerModels.Responses.ServerResponse' );
+		map( "ServerResponse" ).to( "models.ServerModels.Responses.ServerResponse" );
 
-		map( 'Message' )
-			.to( 'models.ServerModels.Common.Message' );
+		map( "Message" ).to( "models.ServerModels.Common.Message" );
+
+		map( "ErrorLog" ).to( "models.ServerModels.Logs.ErrorLog" );
+
 	}
 
 }

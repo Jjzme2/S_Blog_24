@@ -1,10 +1,4 @@
 /**
- * @Author Jj Zettler
- * @Description This will be the access point for the Quote table.
- * @date 9/21/2023
- * @version 0.1
- * @FindOBJECT Quote
- * @FindCOLUMNS t.id
  * ,t.created_on
  * ,t.modified_on
  * ,t.active
@@ -12,6 +6,13 @@
  * ,t.author
  * ,t.quote
  * ,t.source
+ *
+ * @Author      Jj Zettler
+ * @Description This will be the access point for the Quote table.
+ * @date        9/21/2023
+ * @version     0.1
+ * @FindOBJECT  Quote
+ * @FindCOLUMNS t.id
  */
 
 // cfformat-ignore-start
@@ -29,11 +30,11 @@
 	 --->
 
 	<cffunction
-		name="getByActivityStatus"
-		access="package"
+		name      ="getByActivityStatus"
+		access    ="package"
 		returntype="QueryHandler"
-		output="false"
-		hint="Gets a QueryHandler object with the data retrieved from the database."
+		output    ="false"
+		hint      ="Gets a QueryHandler object with the data retrieved from the database."
 	>
 
 		<cfargument name="status" type="boolean" required="true">
@@ -43,9 +44,9 @@
 			<cfset var qry = get(
 				searchTerm="active"
 				<!--- searchTerm="activ" --->
-				,sqlType="cf_sql_bit"
-				,searchValue="#arguments.status#"
-				,exactMatch=true
+				,sqlType     ="cf_sql_bit"
+				,searchValue ="#arguments.status#"
+				,exactMatch  =true
 				,showInactive=!arguments.status
 				)>
 		<cfcatch type="any">
@@ -67,10 +68,10 @@
 	 --->
 	<cffunction
 	 			name="create"
-		access="package"
+		access    ="package"
 		returntype="QueryHandler"
-		output="false"
-		hint="Creates a new Quote object in the database."
+		output    ="false"
+		hint      ="Creates a new Quote object in the database."
 	>
 
 	 	<cfargument name="entity" type="QuoteDTO" required="true">
@@ -104,8 +105,8 @@
 			<cfcatch type="any">
 				<cfset var message = {
 					"customMessage": "Error occurred in Quote Access CREATE.",
-					"errorMessage": "#cfcatch.message#",
-					"sqlCode": "#cfcatch.additional.sql#",
+					"errorMessage" : "#cfcatch.message#",
+					"sqlCode"      : "#cfcatch.additional.sql#",
 				 }>
 
 				<cfthrow type="CustomError" message=#serializeJSON(message)#>
@@ -148,7 +149,9 @@
 				<cfif arguments.exactMatch>
 					WHERE #searchTerm# = <cfqueryparam value="#searchValue#" cfsqltype="#sqlType#">
 						<cfif arguments.searchTerm NEQ 'active'>
-							AND t.active = <cfqueryparam value="#!arguments.showInactive#" cfsqltype="cf_sql_bit">
+							<cfif !arguments.showInactive>
+								AND t.active = 1
+							</cfif>
 						</cfif>
 				<cfelse>
 					WHERE #searchTerm# LIKE <cfqueryparam value="%#searchValue#%" cfsqltype="#sqlType#">
@@ -166,8 +169,8 @@
 			<cfcatch type="any">
 				<cfset var message = {
 					"customMessage": "Error occurred in Quote Access GET.",
-					"errorMessage": "#cfcatch.message#",
-					"sqlCode": "#cfcatch.additional.sql#",
+					"errorMessage" : "#cfcatch.message#",
+					"sqlCode"      : "#cfcatch.additional.sql#",
 				 }>
 
 				<cfthrow type="CustomError" message=#serializeJSON(message)#>

@@ -9,16 +9,19 @@ component accessors="true" {
 	 * --------------------------------------------------------------------------
 	 */
 	// CONSTANT Properties
-	property name="id" 			type="string" 	primarykey="true";
-	property name="createdOn" 	type="datetime";
-	property name="modifiedOn"  type="datetime";
-	property name="active" 		type="boolean";
+	property
+		name      ="id"
+		type      ="string"
+		primarykey="true";
+	property name="createdOn"  type="datetime";
+	property name="modifiedOn" type="datetime";
+	property name="active"     type="boolean";
 
 	// COMMON Properties
-	property name="tags" 		type="string";
-	property name="author" 		type="string";
-	property name="quote" 		type="string";
-	property name="source" 		type="string";
+	property name="tags"   type="string";
+	property name="author" type="string";
+	property name="quote"  type="string";
+	property name="source" type="string";
 
 	/**
 	 * --------------------------------------------------------------------------
@@ -37,11 +40,11 @@ component accessors="true" {
 	 * --------------------------------------------------------------------------
 	 */
 	this.constraints = {
-		id:				{ required : true, type : "string"},
-		active:			{ required : true, type : "boolean"},
-		tags:			{ required : true, type : "string"},
-		author: 		{ required : true, type : "string"},
-		quote:			{ required : true, type : "string"}
+		id     : { required : true, type : "string" },
+		active : { required : true, type : "boolean" },
+		tags   : { required : true, type : "string" },
+		author : { required : true, type : "string" },
+		quote  : { required : true, type : "string" }
 	};
 
 	/**
@@ -50,7 +53,7 @@ component accessors="true" {
 	 * --------------------------------------------------------------------------
 	 */
 	this.population = {
-		include: [
+		include : [
 			"id",
 			"createdOn",
 			"modifiedOn",
@@ -66,14 +69,17 @@ component accessors="true" {
 	 * Constructor
 	 */
 	function init(){
-		setId(createUUID());
-		setCreatedOn(Now());
-		setModifiedOn(Now());
-		setActive(false);
-		setTags("");
-		setAuthor("");
-		setQuote("");
-		setSource("Unavailable");
+		setId( createUUID() );
+		// var utils = application.wirebox.getInstance( "UtilityService" );
+		setCreatedOn( now() );
+		// setCreatedOn( utils.getDateUtils().getNow('yyyy-mm-dd hh:mm:ss') );
+		setModifiedOn( now() );
+		// setModifiedOn( utils.getDateUtils().getNow('yyyy-mm-dd hh:mm:ss') );
+		setActive( false );
+		setTags( "" );
+		setAuthor( "" );
+		setQuote( "" );
+		setSource( "Unavailable" );
 		return this;
 	}
 
@@ -84,45 +90,45 @@ component accessors="true" {
 	 * --------------------------------------------------------------------------
 	 */
 
-	function read() {
-
+	function read(){
 		return {
-			'id':			getId(),
-			'createdOn':	getCreatedOn(),
-			'modifiedOn':	getModifiedOn(),
-			'active':		getActive(),
-			'tags':			getTags(),
-			'author':		getAuthor(),
-			'quote':		getQuote(),
-			'source':		getSource()
+			"id"         : getId(),
+			"createdOn"  : getCreatedOn(),
+			"modifiedOn" : getModifiedOn(),
+			"active"     : getActive(),
+			"tags"       : getTags(),
+			"author"     : getAuthor(),
+			"quote"      : getQuote(),
+			"source"     : getSource()
 		};
 	}
 
-	string function getCSV() {
+	string function getCSV(){
 		return getID() & "," &
-			getCreatedOn() & "," &
-			getModifiedOn() & "," &
-			getActive() & "," &
-			getTags() & "," &
-			getAuthor() & "," &
-			getQuote() & "," &
-			getSource();
+		getCreatedOn() & "," &
+		getModifiedOn() & "," &
+		getActive() & "," &
+		getTags() & "," &
+		getAuthor() & "," &
+		getQuote() & "," &
+		getSource();
 	}
 
-	string function getJSON() {
-		return serializeJSON(read());
+	string function getJSON(){
+		return serializeJSON( read() );
 	}
 
-	array function getProperties() {
+	array function getProperties(){
 		return [
-			'id',
-			'createdOn',
-			'modifiedOn',
-			'active',
-			'tags',
-			'author',
-			'quote',
-			'source'
+			"id",
+			"createdOn",
+			"modifiedOn",
+			"active",
+			"tags",
+			"author",
+			"quote",
+			"source"
 		];
 	}
+
 }

@@ -1,6 +1,6 @@
 // TODO: Make this more versatile as a template.  Right now it's just a copy/paste of the logger I use in my projects.
 
-component name = "SERVICE" {
+component name="SERVICE" {
 
 	// ----------------------------------------------------------- Imports ----------------------------------------------------------- //
 

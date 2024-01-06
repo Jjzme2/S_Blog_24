@@ -9,20 +9,23 @@ component accessors="true" {
 	 * --------------------------------------------------------------------------
 	 */
 	// CONSTANT Properties
-	property name="id" 			type="string" 	primarykey="true";
-	property name="createdOn" 	type="datetime";
-	property name="modifiedOn"  type="datetime";
-	property name="active" 		type="boolean";
+	property
+		name      ="id"
+		type      ="string"
+		primarykey="true";
+	property name="createdOn"  type="datetime";
+	property name="modifiedOn" type="datetime";
+	property name="active"     type="boolean";
 
 	// COMMON Properties
-	property name="title" 		type="string";
+	property name="title"       type="string";
 	property name="description" type="string";
 
 
 	// Unique Properties
 	property name="bodyContent" type="string";
-	property name="intent" type="string";
-	property name="category" type="any";
+	property name="intent"      type="string";
+	property name="category"    type="any";
 
 
 	/**
@@ -42,13 +45,13 @@ component accessors="true" {
 	 * --------------------------------------------------------------------------
 	 */
 	this.constraints = {
-		id:				{ required : true, type : "string"},
-		active:			{ required : true, type : "boolean"},
-		title:			{ required : true, type : "string"},
-		description:	{ required : true, type : "string"},
-		bodyContent:	{ required : true, type : "string"},
-		intent:			{ required : true, type : "string"},
-		category:		{ required : true, type : "any"}
+		id          : { required : true, type : "string" },
+		active      : { required : true, type : "boolean" },
+		title       : { required : true, type : "string" },
+		description : { required : true, type : "string" },
+		bodyContent : { required : true, type : "string" },
+		intent      : { required : true, type : "string" },
+		category    : { required : true, type : "any" }
 	};
 
 	/**
@@ -57,7 +60,7 @@ component accessors="true" {
 	 * --------------------------------------------------------------------------
 	 */
 	this.population = {
-		include: [
+		include : [
 			"id",
 			"createdOn",
 			"modifiedOn",
@@ -74,15 +77,18 @@ component accessors="true" {
 	 * Constructor
 	 */
 	function init(){
-		setId(createUUID());
-		setCreatedOn(Now());
-		setModifiedOn(Now());
-		setActive(false);
-		setTitle("");
-		setDescription("");
-		setBodyContent("");
-		setIntent("");
-		setCategory({'name': "General", 'id': "c32a6cb6-943d-48aa-bae0-c9751b19e17a"});
+		setId( createUUID() );
+		setCreatedOn( now() );
+		setModifiedOn( now() );
+		setActive( false );
+		setTitle( "" );
+		setDescription( "" );
+		setBodyContent( "" );
+		setIntent( "" );
+		setCategory( {
+			"name" : "General",
+			"id"   : "c32a6cb6-943d-48aa-bae0-c9751b19e17a"
+		} );
 		return this;
 	}
 
@@ -93,57 +99,56 @@ component accessors="true" {
 	 * --------------------------------------------------------------------------
 	 */
 
-	function read() {
-
+	function read(){
 		return {
-			'id':			getId(),
-			'createdOn':	getCreatedOn(),
-			'modifiedOn':	getModifiedOn(),
-			'active':		getActive(),
-			'title':		getTitle(),
-			'description':	getDescription(),
-			'bodyContent':	getBodyContent(),
-			'intent':		getIntent(),
-			'category':		getCategory()
+			"id"          : getId(),
+			"createdOn"   : getCreatedOn().Format('yyyy-mm-dd'),
+			"modifiedOn"  : getModifiedOn().Format('yyyy-mm-dd'),
+			"active"      : getActive(),
+			"title"       : getTitle(),
+			"description" : getDescription(),
+			"bodyContent" : getBodyContent(),
+			"intent"      : getIntent(),
+			"category"    : getCategory()
 		};
 	}
 
-	string function getCSV() {
-		return
-			getID() & "," &
-			getCreatedOn() & "," &
-			getModifiedOn() & "," &
-			getActive() & "," &
-			getTitle() & "," &
-			getDescription() & "," &
-			getBodyContent() & "," &
-			getIntent() & "," &
-			getCategory();
+	string function getCSV(){
+		return getID() & "," &
+		getCreatedOn() & "," &
+		getModifiedOn() & "," &
+		getActive() & "," &
+		getTitle() & "," &
+		getDescription() & "," &
+		getBodyContent() & "," &
+		getIntent() & "," &
+		getCategory();
 	}
 
-	string function getJSON() {
-		return serializeJSON(read());
+	string function getJSON(){
+		return serializeJSON( read() );
 	}
 
-	array function getProperties() {
+	array function getProperties(){
 		return [
-			'id',
-			'createdOn',
-			'modifiedOn',
-			'active',
-			'title',
-			'description',
-			'bodyContent',
-			'intent',
-			'category'
+			"id",
+			"createdOn",
+			"modifiedOn",
+			"active",
+			"title",
+			"description",
+			"bodyContent",
+			"intent",
+			"category"
 		];
 	}
 
 	void function activate(){
-		setActive(true);
+		setActive( true );
 	}
 
 	void function deactivate(){
-		setActive(false);
+		setActive( false );
 	}
+
 }

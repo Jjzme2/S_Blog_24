@@ -32,24 +32,24 @@ component accessors="true" {
 	 * --------------------------------------------------------------------------
 	 */
 	this.constraints = {
-		id:				{ required : true, type : "string"},
-		name:			{ required : true, type : "string"},
-		description:	{ required : true, type : "string"},
-		isRecurring:	{ required : true, type : "boolean"},
-		frequency_id:	{ required : true, type : "string"},
-		categoryType_id:{ required : true, type : "string"}
+		id              : { required : true, type : "string" },
+		name            : { required : true, type : "string" },
+		description     : { required : true, type : "string" },
+		isRecurring     : { required : true, type : "boolean" },
+		frequency_id    : { required : true, type : "string" },
+		categoryType_id : { required : true, type : "string" }
 	};
 
 	/**
 	 * Constructor
 	 */
 	function init(){
-		setId(createUUID());
-		setName("");
-		setDescription("");
-		setIsRecurring(false);
-		setFrequency_id("");
-		setCategoryType_id("");
+		setId( createUUID() );
+		setName( "" );
+		setDescription( "" );
+		setIsRecurring( false );
+		setFrequency_id( "" );
+		setCategoryType_id( "" );
 		return this;
 	}
 

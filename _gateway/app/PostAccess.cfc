@@ -1,10 +1,4 @@
 /**
- * @Author Jj Zettler
- * @Description This will be the access point for the post table.
- * @date 12/9/2023
- * @version 0.1
- * @FindOBJECT post
- * @FindCOLUMNS t.id
  * ,t.created_on
  * ,t.modified_on
  * ,t.active
@@ -12,6 +6,12 @@
  * ,t.description
  * ,t.body_content
  *
+ * @Author      Jj Zettler
+ * @Description This will be the access point for the post table.
+ * @date        12/9/2023
+ * @version     0.1
+ * @FindOBJECT  post
+ * @FindCOLUMNS t.id
  */
 
 // cfformat-ignore-start
@@ -26,11 +26,11 @@
 	 --->
 
 	<cffunction
-		name="getByActivityStatus"
-		access="package"
+		name      ="getByActivityStatus"
+		access    ="package"
 		returntype="QueryHandler"
-		output="false"
-		hint="Gets a QueryHandler object with the data retrieved from the database."
+		output    ="false"
+		hint      ="Gets a QueryHandler object with the data retrieved from the database."
 	>
 
 		<cfargument name="status" type="boolean" required="true">
@@ -39,13 +39,40 @@
 			<!--- Use the private helper method to get the data we will need --->
 			<cfset var qry = get(
 				searchTerm="active"
-				,sqlType="cf_sql_bit"
-				,searchValue="#arguments.status#"
-				,exactMatch=true
+				,sqlType     ="cf_sql_bit"
+				,searchValue ="#arguments.status#"
+				,exactMatch  =true
 				,showInactive=!arguments.status
 				)>
 		<cfcatch type="any">
 			<cfset var messages = ["post Access GETBYACTIVITYSTATUS", cfcatch.message]>
+			<cfthrow type="CustomError" message=#serializeJSON(messages)#>
+		</cfcatch>
+		</cftry>
+
+		<cfreturn new QueryHandler( qry )>
+	</cffunction>
+
+	<cffunction
+		name="getById"
+		access="package"
+		returntype="QueryHandler"
+		output=false
+		hint="Gets a QueryHandler with the data given an id.">
+
+		<cfargument name="id" type="string" required="true">
+
+		<cftry>
+			<!--- Use the private helper method to get the data we will need --->
+			<cfset var qry = get(
+				searchTerm="id"
+				,sqlType     ="cf_sql_varchar"
+				,searchValue ="#arguments.id#"
+				,exactMatch  =true
+				,showInactive=true
+				)>
+		<cfcatch type="any">
+			<cfset var messages = ["post Access GETBYID", cfcatch.message]>
 			<cfthrow type="CustomError" message=#serializeJSON(messages)#>
 		</cfcatch>
 		</cftry>
@@ -64,35 +91,31 @@
 		<cfargument name="entity" type="postDTO" required="true">
 
 		<cftry>
-			<cfquery name="qry" datasource="#dataSource#">
+			<cfquery name="createQry" datasource="#dataSource#">
 				INSERT INTO #tableName# (
-					t.id
-					,t.active
-					,t.name
-					,t.description
-					,t.body_content
+					id
+					,active
+					,name
+					,description
+					,body_content
+					,intent
+					,category_id
 				 )
 				VALUES(
 					<cfqueryparam value="#entity.getId()#" cfsqltype="cf_sql_varchar">
 					,<cfqueryparam value="#entity.getActive()#" cfsqltype="cf_sql_bit">
-					,<cfqueryparam value="#entity.getName()#" cfsqltype="cf_sql_varchar">
+					,<cfqueryparam value="#entity.getTitle()#" cfsqltype="cf_sql_varchar">
 					,<cfqueryparam value="#entity.getDescription()#" cfsqltype="cf_sql_varchar">
+					,<cfqueryparam value="#entity.getBodyContent()#" cfsqltype="cf_sql_varchar">
+					,<cfqueryparam value="#entity.getIntent()#" cfsqltype="cf_sql_varchar">
+					,<cfqueryparam value="#entity.getCategory().id#" cfsqltype="cf_sql_varchar">
 				);
-				</cfquery>
-
-				<cfset var qry = get(
-					searchTerm="id"
-					,sqlType="cf_sql_varchar"
-					,searchValue="#entity.getId()#"
-					,exactMatch=true
-					,showInactive=true
-					)>
-					<cfreturn new QueryHandler( qry )>
-				<cfcatch>
-					<cfset var messages = ["post Access CREATE", cfcatch.message]>
-					<cfthrow type="CustomError" message=#serializeJSON(messages)#>
-					<cfreturn false>
-				</cfcatch>
+			</cfquery>
+		<cfcatch>
+			<cfset var messages = ["post Access CREATE", cfcatch.message]>
+			<cfthrow type="CustomError" message=#serializeJSON(messages)#>
+			<cfreturn false>
+		</cfcatch>
 		</cftry>
 	</cffunction>
 
@@ -137,7 +160,9 @@
 				<cfif arguments.exactMatch>
 					WHERE #searchTerm# = <cfqueryparam value="#searchValue#" cfsqltype="#sqlType#">
 						<cfif arguments.searchTerm NEQ 'active'>
-							AND t.active = <cfqueryparam value="#!arguments.showInactive#" cfsqltype="cf_sql_bit">
+							<cfif !arguments.showInactive>
+								AND t.active = 1
+							</cfif>
 						</cfif>
 				<cfelse>
 					WHERE #searchTerm# LIKE <cfqueryparam value="%#searchValue#%" cfsqltype="#sqlType#">
@@ -158,7 +183,7 @@
 			<cfcatch type="any">
 				<cfset var message = {
 					"customMessage": "Error occurred in post Access GET.",
-					"errorMessage": "#cfcatch.message#" }>
+					"errorMessage" : "#cfcatch.message#" }>
 
 				<cfthrow type="CustomError" message=#serializeJSON(message)#>
 

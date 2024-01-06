@@ -1,14 +1,14 @@
 /**
- * @Author Jj Zettler
+ * @Author      Jj Zettler
  * @Description This will be the API Handler for the Post Object
- * @date 9/21/2023
- * @version 0.1
- * @Find = Post
+ * @date        9/21/2023
+ * @version     0.1
+ * @Find        = Post
  */
 component extends="../BaseHandler" {
 
 	property name="dataServer" inject="PostServer";
-	property name="response"  inject="ServerModels/Responses/BaseResponse";
+	property name="response"   inject="ServerModels/Responses/BaseResponse";
 
 	// OPTIONAL HANDLER PROPERTIES
 	this.prehandler_only      = "";
@@ -23,7 +23,7 @@ component extends="../BaseHandler" {
 
 
 	variables.dataServerName = "Posts";
-	variables.pathToThis = "handlers/api/#variables.dataServerName#/";
+	variables.pathToThis     = "handlers/api/#variables.dataServerName#/";
 
 
 
@@ -32,98 +32,132 @@ component extends="../BaseHandler" {
 	 * Main entry point for the handler, Lists all gratitude entries
 	 */
 	remote function index( event, rc, prc ){
+		// Try to get a response from the server
+		try {
+			var serverResponse = dataServer.getRecordsByActivity( status = 1, dataServerName = variables.dataServerName );
 
-	// Try to get a response from the server
-		try{
-			var serverResponse = dataServer
-				.getRecordsByActivity(
-					status=1
-					,dataServerName=variables.dataServerName
-				);
-
-
-			if( serverResponse.getSuccess() ) {
-				var dataObjects = serverResponse.getData();
+			if ( serverResponse.getSuccess() ) {
+				var dataObjects  = serverResponse.getData();
 				var dataToReturn = [];
 
-				if(dataObjects.isEmpty())
+				if ( dataObjects.isEmpty() )
 					return new models.ServerModels.Logs.ErrorLog()
-					.init(
-						error={'Server Messages': serverResponse.getMessages(),
-								"Consider: ": "The Server response returned successfully."
-						},
-						message="Data returned an empty string.",
-						source="PostHandler")
-					.dump();
+						.init(
+							error = {
+								"Server Messages" : serverResponse.getMessages(),
+								"Consider: "      : "The Server response returned successfully."
+							},
+							message = "Data returned an empty string.",
+							source  = "PostHandler"
+						)
+						.dump();
 
-				if( isArray(dataObjects))
-					for( obj in dataObjects ){
-						arrayAppend(dataToReturn, obj.read());
+				if ( isArray( dataObjects ) ) {
+					for ( obj in dataObjects ){
+						if( structKeyExists(obj, 'read') )
+						// !This is a hack to get around the fact that the data is returned as an array of structs, and an array of objects. This should be fixed in the future.
+							arrayAppend( dataToReturn, obj.read() );
 					}
-				else{
-					arrayAppend(dataToReturn, dataObjects.read());
 				}
-				event.renderData( type="json", data=dataToReturn );
-			} else { return new models.ServerModels.Logs.ErrorLog().init(
-				message="The Server Response has encountered an error"
-				,source="PostHandler"
-				,error={'Messages': serverResponse.getMessages(),'Called By': serverResponse.getCaller()})
-				.dump();
+				else arrayAppend( dataToReturn, dataObjects.read() );
+
+				event.renderData( type = "json", data = dataToReturn );
+			} else {
+				return new models.ServerModels.Logs.ErrorLog()
+					.init(
+						message = "The Server Response has encountered an error",
+						source  = "PostHandler",
+						error   = {
+							"Messages"  : serverResponse.getMessages(),
+							"Called By" : serverResponse.getCaller()
+						}
+					)
+					.dump();
 			}
-		}catch( any e ){
-			writeDump(var=e, abort=true);
-			return new models.ServerModels.Logs.ErrorLog().init(message="ERROR", source="PostHandler", error=e).dump();
+		} catch ( any e ) {
+			writeDump( var = e, abort = true );
+			return new models.ServerModels.Logs.ErrorLog()
+				.init(
+					message = "ERROR",
+					source  = "PostHandler",
+					error   = e
+				)
+				.dump();
 		}
 	}
 
 	remote function createNew( event, rc, prc ){
+		var serverResponse = dataServer.create( dataServerName = variables.dataServerName, payload = rc );
 
-		var propertyArray = [
-			'name'
-			,'description'
-			,'active'
-			,'bodyContent'
-		];
+		if ( serverResponse.getSuccess() ) {
+			var dataObjects = serverResponse.getData();
+			// I think this should always return 1, but just in case, we will loop through the array, for now.
+			var dataToReturn = [];
 
-		var objectData = {};
+			if( dataObjects.isEmpty() )
+				return new models.ServerModels.Logs.ErrorLog()
+					.init(
+						error = {
+							"Server Messages" : serverResponse.getMessages(),
+							"Consider: "      : "The Server response returned successfully."
+						},
+						message = "Data returned an empty string.",
+						source  = "PostHandler"
+					)
+					.dump();
 
-		for( property in propertyArray ){
-			if( structKeyExists(rc, property) ){
-				objectData[property] = rc[property];
+			if( isArray( dataObjects ) ) {
+				for ( obj in dataObjects ){
+					if( structKeyExists(obj, 'read') )
+					// !This is a hack to get around the fact that the data is returned as an array of structs, and an array of objects. This should be fixed in the future.
+						arrayAppend( dataToReturn, obj.read() );
+				}
 			}
-		}
+			else arrayAppend( dataToReturn, dataObjects.read() );
 
-		// writeDump(var=objectData, abort=true);
-
-		var serverResponse = dataServer.create( dataServerName=variables.dataServerName, data=objectData );
-
-		if( serverResponse.getSuccess() ){
-			event.renderData( type="json", data=serverResponse.getData().read() );
+			event.renderData( type = "json", data = dataToReturn );
 		} else {
-			return new models.ServerModels.Logs.ErrorLog().init(
-				message="The Server Response has encountered an error"
-				,source="PostHandler"
-				,error={'Messages': serverResponse.getMessages(),'Called By': serverResponse.getCaller()})
-				// !Create an error struct that will return if successful, and a custom error (See above) if not.
-				// ,error=serverResponse.getErrorStruct())
-				.dump();
-		}
-	}s
-
-
-	remote function getPostById( event, rc, prc ){
-		var serverResponse = dataServer.getRecordById( id=rc.id, dataServerName=variables.dataServerName );
-
-		if( serverResponse.getSuccess() ){
-			event.renderData( type="json", data=serverResponse.getData().read() );
-		} else {
-			return new models.ServerModels.Logs.ErrorLog().init(
-				message="The Server Response has encountered an error"
-				,source="PostHandler"
-				,error={'Messages': serverResponse.getMessages(),'Called By': serverResponse.getCaller()})
+			return new models.ServerModels.Logs.ErrorLog()
+				.init(
+					message = "The Server Response has encountered an error",
+					source  = "PostHandler",
+					error   = {
+						"Messages"  : serverResponse.getMessages(),
+						"Called By" : serverResponse.getCaller()
+					}
+				)
 				// !Create an error struct that will return if successful, and a custom error (See above) if not.
 				// ,error=serverResponse.getErrorStruct())
 				.dump();
 		}
 	}
+	s
+
+
+	remote function getPostById( event, rc, prc ){
+		var serverResponse = dataServer.getRecordById( id = rc.id, dataServerName = variables.dataServerName );
+
+		if ( serverResponse.getSuccess() ) {
+			event.renderData(
+				type = "json",
+				data = serverResponse
+					.getData()
+					.read()
+			);
+		} else {
+			return new models.ServerModels.Logs.ErrorLog()
+				.init(
+					message = "The Server Response has encountered an error",
+					source  = "PostHandler",
+					error   = {
+						"Messages"  : serverResponse.getMessages(),
+						"Called By" : serverResponse.getCaller()
+					}
+				)
+				// !Create an error struct that will return if successful, and a custom error (See above) if not.
+				// ,error=serverResponse.getErrorStruct())
+				.dump();
+		}
+	}
+
 }

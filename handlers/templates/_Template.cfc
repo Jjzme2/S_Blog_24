@@ -1,9 +1,9 @@
 /**
- * @Author Jj Zettler
+ * @Author      Jj Zettler
  * @Description This will be the API Handler for the OBJECTNAME Object
- * @date 9/21/2023
- * @version 0.1
- * @Find = OBJECTNAME
+ * @date        9/21/2023
+ * @version     0.1
+ * @Find        = OBJECTNAME
  */
 component extends="../BaseHandler" {
 
@@ -25,7 +25,7 @@ component extends="../BaseHandler" {
 	 * Main entry point for the handler, Lists all gratitude entries
 	 */
 	remote function index( event, rc, prc ){
-		var target   = dataServer.getByActivity(1);
+		var target   = dataServer.getByActivity( 1 );
 		var response = {
 			"message"    : "Active OBJECTNAMEs Listed Successfully",
 			"data"       : target,
@@ -39,4 +39,5 @@ component extends="../BaseHandler" {
 		);
 		// event.renderData( type="json", data=target );
 	}
+
 }

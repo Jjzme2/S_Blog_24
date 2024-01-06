@@ -1,19 +1,14 @@
 /**
  * My RESTFul Event Handler
  */
-component extends = "coldbox.system.RestHandler" {
+component extends="coldbox.system.RestHandler" {
 
 	// Don't forget to Map in config/Wirebox.cfc where applicable.
 
-	property
-		name   = "populator"
-		inject = "wirebox:populator";
-	property
-		name   = "logbox"
-		inject = "logbox:logger:api";
-	property
-		name   = "stringUtil"
-		inject = "StringService";
+	property name="populator"  inject="wirebox:populator";
+	property name="logbox"     inject="logbox:logger:api";
+	// Create a Utility Importer
+	property name="utils"   inject="UtilityService";
 
 	// property
 	// 	name   = "converter"
@@ -22,28 +17,24 @@ component extends = "coldbox.system.RestHandler" {
 
 
 	// OPTIONAL HANDLER PROPERTIES
-	this.prehandler_only      = '';
-	this.prehandler_except    = '';
-	this.posthandler_only     = '';
-	this.posthandler_except   = '';
-	this.aroundHandler_only   = '';
-	this.aroundHandler_except = '';
+	this.prehandler_only      = "";
+	this.prehandler_except    = "";
+	this.posthandler_only     = "";
+	this.posthandler_except   = "";
+	this.aroundHandler_only   = "";
+	this.aroundHandler_except = "";
 
 	// REST Allowed HTTP Methods Ex: this.allowedMethods = {delete='POST,DELETE',index='GET'}
-	this.allowedMethods = { };
+	this.allowedMethods = {};
 
 
 	/**
 	 * Handle PreFlight Requests
 	 */
-	remote function preFlight (
-		 event
-		,rc
-		,prc
-	) {
-		var message = 'PreFlight Request Made @ #now( )#';
+	remote function preFlight( event, rc, prc ){
+		var message = "PreFlight Request Made @ #now()#";
 		// logService.sendLog(message="PreFlight Request Made @ #now()#", prefix="BaseHandler");
-		if ( logbox.canInfo( ) ) {
+		if ( logbox.canInfo() ) {
 			logbox.info( message );
 		}
 	}
@@ -55,21 +46,23 @@ component extends = "coldbox.system.RestHandler" {
 	 * @param {struct} data - The data to include in the response.
 	 * @param {string} message - The message to send.
 	 * @param {number} statusCode - The HTTP status code.
+	 * !Note: Isn't used very often. Prefer to use 'ServerResponse' Objects
 	 */
-	public function sendResponse (
-		 required event
-		,requiredmessage = 'A message from the server'
-		,data            = { }
-		,statusCode      = 404
-	) {
+	public function sendResponse(
+		required event,
+		requiredmessage = "A message from the server",
+		data            = {},
+		statusCode      = 404
+	){
 		event
-			.getResponse( )
+			.getResponse()
 			.setData( data )
 			.addMessage( message )
 			.setStatusCode( statusCode );
 	}
 	remote function getEmpty( event, rc, prc ){
-		var dataObject = dataServer.getEmpty( dataServerName=variables.dataServerName );
-		event.renderData( type="json", data=dataObject.read() );
+		var dataObject = dataServer.getEmpty( dataServerName = variables.dataServerName );
+		event.renderData( type = "json", data = dataObject.read() );
 	}
+
 }

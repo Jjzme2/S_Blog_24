@@ -1,20 +1,20 @@
 /**
  * @Author      Jj Zettler
- * @Description This will be the API Handler for the Quote Object
+ * @Description This will be the API Handler for the PostCategory Object
  * @date        12/9/2023
  * @version     0.1
- * @Find        = Quote
+ * @Find        = PostCategory
  */
 component extends="../BaseHandler" {
 
-	property name="dataServer" inject="QuoteServer";
+	property name="dataServer" inject="PostCategoryServer";
 	property name="response"   inject="ServerModels/Responses/BaseResponse";
 
 	// OPTIONAL HANDLER PROPERTIES
 	this.prehandler_only      = "";
 	this.prehandler_except    = "";
-	this.QuoteHandler_only     = "";
-	this.QuoteHandler_except   = "";
+	this.posthandler_only     = "";
+	this.posthandler_except   = "";
 	this.aroundHandler_only   = "";
 	this.aroundHandler_except = "";
 
@@ -22,7 +22,7 @@ component extends="../BaseHandler" {
 	this.allowedMethods = {};
 
 
-	variables.dataServerName = "Quotes";
+	variables.dataServerName = "PostCategories";
 	variables.pathToThis     = "handlers/api/#variables.dataServerName#/";
 
 
@@ -40,15 +40,17 @@ component extends="../BaseHandler" {
 				var dataObjects = serverResponse.getData();
 				var dataToReturn = [];
 
-				if( dataObjects.isEmpty() )
+				if ( dataObjects.isEmpty() )
 					return new models.ServerModels.Logs.ErrorLog()
 						.init(
-							message = "Data returned an empty value.",
-							source  = "QuoteHandler",
-							error   = {
-								"Messages"   : serverResponse.getMessages(),
-								"Consider: " : "The Server response returned successfully."
-							}).dump();
+							error = {
+								"Server Messages" : serverResponse.getMessages(),
+								"Consider: "      : "The Server response returned successfully."
+							},
+							message = "Data returned an empty string.",
+							source  = "PostCategoryHandler"
+						)
+						.dump();
 
 				if ( isArray( dataObjects ) ) {
 					for ( obj in dataObjects ){
@@ -59,13 +61,12 @@ component extends="../BaseHandler" {
 				}
 				else arrayAppend( dataToReturn, dataObjects.read() );
 
-
 				event.renderData( type = "json", data = dataToReturn );
 			} else {
 				return new models.ServerModels.Logs.ErrorLog()
 					.init(
 						message = "The Server Response has encountered an error",
-						source  = "QuoteHandler",
+						source  = "PostCategoryHandler",
 						error   = {
 							"Messages"  : serverResponse.getMessages(),
 							"Called By" : serverResponse.getCaller()
@@ -78,7 +79,7 @@ component extends="../BaseHandler" {
 			return new models.ServerModels.Logs.ErrorLog()
 				.init(
 					message = "ERROR",
-					source  = "QuoteHandler",
+					source  = "PostCategoryHandler",
 					error   = e
 				)
 				.dump();

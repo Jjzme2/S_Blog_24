@@ -1,13 +1,13 @@
 /**
  * @Author      Jj Zettler
  * @Description This serves as the base access point for the OBJECTNAME table.
- * @date 12/9/2023
+ * @date        12/9/2023
  * @version     0.1
  * @FindOBJECT  OBJECTNAME
  * @FindCOLUMNS COLS
  */
 
-<!--- The comment below, as is (?) will ignore this file until it finds the comment at the bottom of this document.   --->
+/* The comment below, as is (?) will ignore this file until it finds the comment at the bottom of this document.   */
 // cfformat-ignore-start
 
 <cfcomponent output = 'false'>
@@ -16,7 +16,7 @@
 	<cfset tableName  = ''> /* Defined in the extending component */
 	<cfset dataSource = application.cbController.getSetting( 'primaryDatasource' )>
 	<cfset converter  = createObject( 'services.utilities.ConversionService' )>
-	<cfset objectUtil = createObject( 'services.utilities.ObjectService' )>
+	<cfset objectUtil = createObject( 'services.utilities.WireboxService' )>
 
 	/*
 	 * ---------------------------------------------------
@@ -26,10 +26,10 @@
 
 	/* List all rows within the specified table */
 	<cffunction name='list'
-		access='package'
+		access    ='package'
 		returntype='Array'
-		output='false'
-		hint='Returns all rows within the specified table.'>
+		output    ='false'
+		hint      ='Returns all rows within the specified table.'>
 
 		<cfargument name='order' type='struct' required='false' default='#{}#'>
 
@@ -47,7 +47,7 @@
 			<cfcatch type='CustomError'>
 				<cfset var errorMessage = {
 					'customMessage': 'Error occurred in LIST.',
-					'errorMessage': 'Custom error message here'
+					'errorMessage' : 'Custom error message here'
 				}>
 				<cfthrow type='CustomError' message='#SerializeJSON(errorMessage)#'>
 			</cfcatch>

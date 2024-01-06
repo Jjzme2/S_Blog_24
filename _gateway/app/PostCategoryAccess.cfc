@@ -1,16 +1,21 @@
 /**
- * @Author      Jj Zettler
- * @Description This will be the access point for the OBJECTNAME table.
- * @date        12/9/2023
- * @version     0.1
- * @FindOBJECT  OBJECTNAME
- * @FindCOLUMNS COLS
+ * @Author Jj Zettler
+ * @Description This will be the access point for the postCategory table.
+ * @date 12/9/2023
+ * @version 0.1
+ * @FindOBJECT postCategory
+ * @FindCOLUMNS t.id
+ * ,t.created_on
+ * ,t.modified_on
+ * ,t.active
+ * ,t.name
+ * ,t.description
  */
 
 // cfformat-ignore-start
 <cfcomponent output="false" extends="BaseAccess">
 
-	<cfset tableName  = "OBJECTNAMEs">
+	<cfset tableName  = "post_categories">
 
 	<!---
 	 * -------------------------------------------------------------
@@ -19,11 +24,11 @@
 	 --->
 
 	<cffunction
-		name      ="getByActivityStatus"
-		access    ="package"
+		name="getByActivityStatus"
+		access="package"
 		returntype="QueryHandler"
-		output    ="false"
-		hint      ="Gets a QueryHandler object with the data retrieved from the database."
+		output="false"
+		hint="Gets a QueryHandler object with the data retrieved from the database."
 	>
 
 		<cfargument name="status" type="boolean" required="true">
@@ -32,13 +37,13 @@
 			<!--- Use the private helper method to get the data we will need --->
 			<cfset var qry = get(
 				searchTerm="active"
-				,sqlType     ="cf_sql_bit"
-				,searchValue ="#arguments.status#"
-				,exactMatch  =true
+				,sqlType="cf_sql_bit"
+				,searchValue="#arguments.status#"
+				,exactMatch=true
 				,showInactive=!arguments.status
 				)>
 		<cfcatch type="any">
-			<cfset var messages = ["OBJECTNAME Access GETBYACTIVITYSTATUS", cfcatch.message]>
+			<cfset var messages = ["postCategory Access GETBYACTIVITYSTATUS", cfcatch.message]>
 			<cfthrow type="CustomError" message=#serializeJSON(messages)#>
 		</cfcatch>
 		</cftry>
@@ -54,11 +59,17 @@
 	 --->
 
 	<cffunction name="create" access="package" returntype="any" output="false" hint="Adds a new entry into the database.">
-		<cfargument name="entity" type="OBJECTNAMEDTO" required="true">
+		<cfargument name="entity" type="postCategoryDTO" required="true">
 
 		<cftry>
 			<cfquery name="qry" datasource="#dataSource#">
-				INSERT INTO #tableName# ( COLS )
+				INSERT INTO #tableName# ( t.id
+					,t.created_on
+					,t.modified_on
+					,t.active
+					,t.name
+					,t.description
+				)
 				VALUES(
 					<cfqueryparam value="#entity.getId()#" cfsqltype="cf_sql_varchar">
 					,<cfqueryparam value="#entity.getActive()#" cfsqltype="cf_sql_bit">
@@ -69,14 +80,14 @@
 
 				<cfset var qry = get(
 					searchTerm="id"
-					,sqlType     ="cf_sql_varchar"
-					,searchValue ="#entity.getId()#"
-					,exactMatch  =true
+					,sqlType="cf_sql_varchar"
+					,searchValue="#entity.getId()#"
+					,exactMatch=true
 					,showInactive=true
 					)>
 					<cfreturn new QueryHandler( qry )>
 				<cfcatch>
-					<cfset var messages = ["OBJECTNAME Access CREATE", cfcatch.message]>
+					<cfset var messages = ["postCategory Access CREATE", cfcatch.message]>
 					<cfthrow type="CustomError" message=#serializeJSON(messages)#>
 					<cfreturn false>
 				</cfcatch>
@@ -103,29 +114,34 @@
 
 		<cftry>
 			<cfquery name="qry" datasource="#dataSource#">
-				SELECT COLS
+				SELECT t.id
+				,t.created_on as createdOn
+				,t.modified_on as modifiedOn
+				,t.active
+				,t.name
+				,t.description
 
 				FROM #tableName# t
 
 				<cfif arguments.exactMatch>
 					WHERE #searchTerm# = <cfqueryparam value="#searchValue#" cfsqltype="#sqlType#">
 						<cfif arguments.searchTerm NEQ 'active'>
-							AND t.active = <cfqueryparam value="#!arguments.showInactive#" cfsqltype="cf_sql_bit">
-						</cfif>
-				<cfelse>
-					WHERE #searchTerm# LIKE <cfqueryparam value="%#searchValue#%" cfsqltype="#sqlType#">
-						<cfif arguments.searchTerm NEQ 'active'>
 							<cfif !arguments.showInactive>
 								AND t.active = 1
 							</cfif>
 						</cfif>
+				<cfelse>
+					WHERE #searchTerm# LIKE <cfqueryparam value="%#searchValue#%" cfsqltype="#sqlType#">
+					<cfif arguments.searchTerm NEQ 'active'>
+						AND t.active = <cfqueryparam value="#!arguments.showInactive#" cfsqltype="cf_sql_bit">
+					</cfif>
 				</cfif>
 			</cfquery>
 
 			<cfcatch type="any">
 				<cfset var message = {
-					"customMessage": "Error occurred in OBJECTNAME Access GET.",
-					"errorMessage" : "#cfcatch.message#" }>
+					"customMessage": "Error occurred in postCategory Access GET.",
+					"errorMessage": "#cfcatch.message#" }>
 
 				<cfthrow type="CustomError" message=#serializeJSON(message)#>
 

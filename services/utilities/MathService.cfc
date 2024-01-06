@@ -1,4 +1,4 @@
-component name = "MathService" {
+component name="MathService" {
 
 	/**
 	 *
@@ -8,22 +8,18 @@ component name = "MathService" {
 	 *
 	 * @return {Number}
 	 */
-	public numeric function calculate (
-		 a
-		,b
-		,operation
-	) {
+	public numeric function calculate( a, b, operation ){
 		switch ( operation ) {
-			case 'add':
+			case "add":
 				return a + b;
-			case 'subtract':
+			case "subtract":
 				return a - b;
-			case 'multiply':
+			case "multiply":
 				return a * b;
-			case 'divide':
+			case "divide":
 				return a / b;
 			default:
-				throw new Error( 'Operation ' + operation + ' is not supported' );
+				throw new Error( "Operation " + operation + " is not supported" );
 		}
 	}
 

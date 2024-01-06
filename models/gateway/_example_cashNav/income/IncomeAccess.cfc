@@ -1,13 +1,12 @@
 <!--- implements="EntityGateway" --->
 <cfcomponent output="false">
-
 	<!--- Define the table name --->
-	<cfset tableName = "incomes"> 		<!--- SET THIS --->
-	<cfset dataSource = "cash_navigator"> <!--- SET THIS --->
+	<cfset tableName = "incomes"><!--- SET THIS --->
+	<cfset dataSource = "cash_navigator"><!--- SET THIS --->
 
 	<!--- Package Access will allow the methods to be called from within the package --->
 	<!--- Shouldn't need to change much --->
-	<!--- ------------------------------------------------------------------- --->
+	<!------------------------------------------------------------------------->
 	<!--- Implement the delete method --->
 	<cffunction name="deleteAccessObjectByID" access="package" output="false">
 		<cfargument name="entityId" type="string" required="true">
@@ -46,7 +45,6 @@
 		<cfreturn list>
 	</cffunction>
 
-
 	<!--- Implement the read method --->
 	<cffunction name="getAccessObjectByID" access="package" returntype="query" output="false">
 		<cfargument name="entityId" type="string" required="true">
@@ -71,15 +69,19 @@
 		</cfquery>
 
 		<cfreturn get>
-
 	</cffunction>
 
-
 	<!--- Needs more editing --->
-	<!--- ------------------------------------------------------------------- --->
+	<!------------------------------------------------------------------------->
 
 	<!--- Implement the create method --->
-	<cffunction name="create" access="package" returntype="boolean" output="false" hint="Adds a new entry into the database.">
+	<cffunction
+		name      ="create"
+		access    ="package"
+		returntype="boolean"
+		output    ="false"
+		hint      ="Adds a new entry into the database."
+	>
 		<cfargument name="entity" type="struct" required="true">
 
 		<cfquery datasource=#dataSource#>
@@ -90,14 +92,14 @@
 				,description
 				,posted_date
 				,note
-	  		)
+				)
 			VALUES (
-				<cfqueryparam  value="#entity.getId()#" 			cfsqltype="cf_sql_varchar">
-				,<cfqueryparam value="#entity.getAmount()#" 		cfsqltype="cf_sql_numeric">
-				,<cfqueryparam value="#entity.getCategoryID()#"  	cfsqltype="cf_sql_varchar">
-				,<cfqueryparam value="#entity.getDescription()#"  	cfsqltype="cf_sql_varchar">
-				,<cfqueryparam value="#entity.getPostedDate()#"  	cfsqltype="cf_sql_timestamp">
-				,<cfqueryparam value="#entity.getNote()#"  			cfsqltype="cf_sql_varchar">
+				<cfqueryparam value="#entity.getId()#" cfsqltype="cf_sql_varchar">
+				,<cfqueryparam value="#entity.getAmount()#" cfsqltype="cf_sql_numeric">
+				,<cfqueryparam value="#entity.getCategoryID()#" cfsqltype="cf_sql_varchar">
+				,<cfqueryparam value="#entity.getDescription()#" cfsqltype="cf_sql_varchar">
+				,<cfqueryparam value="#entity.getPostedDate()#" cfsqltype="cf_sql_timestamp">
+				,<cfqueryparam value="#entity.getNote()#" cfsqltype="cf_sql_varchar">
 			)
 		</cfquery>
 
@@ -106,19 +108,19 @@
 
 	<!--- Implement the update method --->
 	<cffunction name="updateAccessObjectByID" access="package" returntype="boolean" output="false">
-		<cfargument name="currentId"     type="string" required="true">
+		<cfargument name="currentId" type="string" required="true">
 		<cfargument name="entity" type="struct" required="true">
 
 		<cfquery datasource=#dataSource#>
 			UPDATE #tableName#
 			SET
-				id            	 = <cfqueryparam value="#entity.getId()#"          	 cfsqltype="cf_sql_varchar">
-				,amount	    	 = <cfqueryparam value="#entity.getAmount()#" 	 	 cfsqltype="cf_sql_numeric">
-				,category_id	 = <cfqueryparam value="#entity.getCategoryID()#"	 cfsqltype="cf_sql_varchar">
-				,description	 = <cfqueryparam value="#entity.getDescription()#"	 cfsqltype="cf_sql_varchar">
-				,posted_date	 = <cfqueryparam value="#entity.getPostedDate()#"	 cfsqltype="cf_sql_timestamp">
-				,note			 = <cfqueryparam value="#entity.getNote()#"			 cfsqltype="cf_sql_varchar">
-			WHERE id          	 = <cfqueryparam value="#currentId#" 				 cfsqltype="cf_sql_varchar">
+				id            	 = <cfqueryparam value="#entity.getId()#" cfsqltype="cf_sql_varchar">
+				,amount	    	 = <cfqueryparam value="#entity.getAmount()#" cfsqltype="cf_sql_numeric">
+				,category_id	 = <cfqueryparam value="#entity.getCategoryID()#" cfsqltype="cf_sql_varchar">
+				,description	 = <cfqueryparam value="#entity.getDescription()#" cfsqltype="cf_sql_varchar">
+				,posted_date	 = <cfqueryparam value="#entity.getPostedDate()#" cfsqltype="cf_sql_timestamp">
+				,note			 = <cfqueryparam value="#entity.getNote()#" cfsqltype="cf_sql_varchar">
+			WHERE id          	 = <cfqueryparam value="#currentId#" cfsqltype="cf_sql_varchar">
 		</cfquery>
 
 		<cfreturn true>

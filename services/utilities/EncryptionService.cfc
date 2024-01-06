@@ -1,36 +1,21 @@
-component name = "EncryptionService" {
+component name="EncryptionService" {
 
-	property
-		name   = "BCrypt"
-		inject = "@BCrypt";
+	property name="BCrypt" inject="@BCrypt";
 
 
-	string function hashPassword (
-		 password
-		,saltRounds = 10
-	) {
+	string function hashPassword( password, saltRounds = 10 ){
 		try {
-			return BCrypt.hashPassword(
-				 password
-				,saltRounds
-			);
+			return BCrypt.hashPassword( password, saltRounds );
 		} catch ( e ) {
-			throw( 'Error hashing password: ' & e.message );
+			throw( "Error hashing password: " & e.message );
 		}
 	}
 
-	boolean function checkPassword (
-		 password
-		,hash
-	) {
-		return BCrypt.checkPassword(
-			 password
-			,hash
-		);
+	boolean function checkPassword( password, hash ){
+		return BCrypt.checkPassword( password, hash );
 	}
 
-	string function generateSalt ( rounds ) {
-		return BCrypt.generateSalt( );
+	string function generateSalt( rounds ){
+		return BCrypt.generateSalt();
 	}
-
 }

@@ -79,7 +79,8 @@ component {
 			COLDBOX_APP_KEY,
 			COLDBOX_APP_MAPPING
 		);
-		application.cbBootstrap.loadColdbox();
+		application.cbBootstrap
+			.loadColdbox();
 		return true;
 	}
 
@@ -89,7 +90,8 @@ component {
 	 * @appScope The app scope
 	 */
 	public void function onApplicationEnd( struct appScope ){
-		arguments.appScope.cbBootstrap.onApplicationEnd( arguments.appScope );
+		arguments.appScope.cbBootstrap
+			.onApplicationEnd( arguments.appScope );
 	}
 
 	/**
@@ -99,7 +101,8 @@ component {
 	 */
 	public boolean function onRequestStart( string targetPage ){
 		// Process ColdBox Request
-		application.cbBootstrap.onRequestStart( arguments.targetPage );
+		application.cbBootstrap
+			.onRequestStart( arguments.targetPage );
 		return true;
 	}
 
@@ -108,7 +111,8 @@ component {
 	 */
 	public void function onSessionStart(){
 		if ( !isNull( application.cbBootstrap ) ) {
-			application.cbBootStrap.onSessionStart();
+			application.cbBootStrap
+				.onSessionStart();
 		}
 	}
 
@@ -119,7 +123,8 @@ component {
 	 * @appScope     The app scope
 	 */
 	public void function onSessionEnd( struct sessionScope, struct appScope ){
-		arguments.appScope.cbBootStrap.onSessionEnd( argumentCollection = arguments );
+		arguments.appScope.cbBootStrap
+			.onSessionEnd( argumentCollection = arguments );
 	}
 
 	/**
@@ -128,7 +133,8 @@ component {
 	 * @template
 	 */
 	public boolean function onMissingTemplate( template ){
-		return application.cbBootstrap.onMissingTemplate( argumentCollection = arguments );
+		return application.cbBootstrap
+			.onMissingTemplate( argumentCollection = arguments );
 	}
 
 }

@@ -1,23 +1,24 @@
 /**
- * @Author Jj Zettler
+ * @Author      Jj Zettler
  * @Description This will be the service that will handle all the related functions for the Post object.
- * @date 12/20/2023
- * @version 0.1
- * @Find = Post
+ * @date        12/20/2023
+ * @version     0.1
+ * @Find        = Post
  */
-component singleton
+component
+	singleton
 	accessors="true"
-	name="PostServer"
-	extends="BaseServer"
+	name     ="PostServer"
+	extends  ="BaseServer"
 {
 
 	property name="accessPoint" inject="PostAccess";
 
 	/**
-	* ----------------------------------------------------------------------------------------------
-    * *OBJECT INSTANTIATION
-	* ----------------------------------------------------------------------------------------------
-	*/
+	 * ----------------------------------------------------------------------------------------------
+	 * *OBJECT INSTANTIATION
+	 * ----------------------------------------------------------------------------------------------
+	 */
 
 	/** Private functions for this service. */
 
@@ -26,10 +27,11 @@ component singleton
 
 	/**
 	 * This will get an empty PostDTO.
+	 *
 	 * @return An empty Post DTO.
 	 */
-	public PostDTO function getEmpty()
-	{
+	public PostDTO function getEmpty(){
 		return new models.DTO.PostDTO();
 	}
+
 }

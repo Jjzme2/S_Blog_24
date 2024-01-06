@@ -26,15 +26,13 @@ component accessors="true" {
 	 * Validation
 	 * --------------------------------------------------------------------------
 	 */
-	this.constraints = {
-		id:				{ required : true, type : "string"},
-	};
+	this.constraints = { id : { required : true, type : "string" } };
 
 	/**
 	 * Constructor
 	 */
 	function init(){
-		setId(createUUID());
+		setId( createUUID() );
 		return this;
 	}
 

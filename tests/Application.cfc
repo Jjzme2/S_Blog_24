@@ -42,8 +42,13 @@ component {
 		request.coldBoxVirtualApp= new coldbox.system.testing.VirtualApp( appMapping = "/root" );
 
 		// If hitting the runner or specs, prep our virtual app
-		if ( getBaseTemplatePath().replace( expandPath( "/tests" ), "" ).reFindNoCase( "(runner|specs)" ) ) {
-			request.coldBoxVirtualApp.startup();
+		if (
+			getBaseTemplatePath()
+				.replace( expandPath( "/tests" ), "" )
+				.reFindNoCase( "(runner|specs)" )
+		) {
+			request.coldBoxVirtualApp
+				.startup();
 		}
 
 		// Reload for fresh results
@@ -52,7 +57,8 @@ component {
 				pagePoolClear();
 			}
 			// ormReload();
-			request.coldBoxVirtualApp.restart();
+			request.coldBoxVirtualApp
+				.restart();
 		}
 
 		return true;
@@ -62,7 +68,8 @@ component {
 	 * Fires when the testing requests end and the ColdBox application is shutdown
 	 */
 	public void function onRequestEnd( required targetPage ){
-		request.coldBoxVirtualApp.shutdown();
+		request.coldBoxVirtualApp
+			.shutdown();
 	}
 
 	private boolean function shouldEnableFullNullSupport(){
