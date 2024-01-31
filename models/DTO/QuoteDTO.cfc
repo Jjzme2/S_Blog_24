@@ -72,9 +72,9 @@ component accessors="true" {
 		setId( createUUID() );
 		// var utils = application.wirebox.getInstance( "UtilityService" );
 		setCreatedOn( now() );
-		// setCreatedOn( utils.getDateUtils().getNow('yyyy-mm-dd hh:mm:ss') );
+		// setCreatedOn( utils.getDateTimeUtils().getNow('yyyy-mm-dd hh:mm:ss') );
 		setModifiedOn( now() );
-		// setModifiedOn( utils.getDateUtils().getNow('yyyy-mm-dd hh:mm:ss') );
+		// setModifiedOn( utils.getDateTimeUtils().getNow('yyyy-mm-dd hh:mm:ss') );
 		setActive( false );
 		setTags( "" );
 		setAuthor( "" );

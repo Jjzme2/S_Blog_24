@@ -7,29 +7,20 @@ component
 
 	property name="error" type="any";
 
-	public ErrorLog function init( message, source, error ){
-		super.init(
-			message = arguments.message,
-			level   = "Error",
-			source  = arguments.source
-		);
-		setError( arguments.error )
+	public ErrorLog function init( source, error ){
+		super.init();
+		setSource( arguments.source );
+		setError( arguments.error );
+		setLevel( "Error" );
 		return this;
 	}
 
-	public function dump( boolean doAbort = true ){
-		var dump = {
-			"message" : getMessage(),
-			"level"   : getLevel(),
-			"source"  : getSource(),
-			"error"   : getError()
-		}
-
+	public void function dumpError( doAbort = true ){
 		writeDump(
-			var   = dump,
-			label = "#getLevel()#Log",
+			var   = getError(),
+			label = "ErrorLog Dump",
 			abort = doAbort
-		);
+		)
 	}
 
 }

@@ -11,8 +11,9 @@ component
 
 	// Constructor
 	function init( string caller = "Unknown" ){
-		var utils = application.wirebox.getInstance( "UtilityService" );
-		setCreatedOn( utils.getDateUtils().getNow('yyyy-mm-dd hh:mm:ss') );
+		var utils = application.wirebox
+			.getInstance( "UtilityService" );
+		setCreatedOn( now().dateTimeFormat( "yyyy-mm-dd HH:nn:ss", "CST" ) );
 		setMessages( [] );
 		setCaller( caller );
 		return this;

@@ -1,0 +1,37 @@
+/*
+Theme:
+	Default:
+		- 0d012e -- Russian Violet (Primary Background)
+		- eff8e2 -- Floral White (Primary Text)
+		- ff1fbc -- Electric Pink (Links)
+		- 52b2cf -- Light Blue (Primary Buttons)
+		- 615756 -- Dark Grayish Brown (Secondary Buttons)
+		- fcb0b3 -- Melon (Panels)
+*/
+
+:root {
+  /* Backgrounds */
+  --primary-bg-color: #0e0036;
+  --navbar-bg-color: #012f5a;
+  --console-bg-color: #64004f; /* Delete */
+  --card-bg-color: #64004f;
+
+  /* Border */
+  --border-color: #615756;
+
+  /* Text */
+  /* --primary-text-color: #eff8e2; */
+  --primary-text-color: #00bfff;
+  --secondary-text-color: #ffff00;
+  --console-text-color: #ff1fbc; /* Delete */
+  --card-title-color: #ff1fbc;
+  --font-family: 'Times New Roman', Times, serif;
+  --font-size: 1.2rem;
+
+  --markdown-table-even-text-color: #64004f;
+  --markdown-table-odd-text-color: #8587ff;
+
+  /* Table */
+  --markdown-table-even-row-color: #8587ff;
+  --markdown-table-odd-row-color: #64004f;
+}

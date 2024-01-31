@@ -23,7 +23,7 @@
 			reinitKey                : "fwreinit",
 			handlersIndexAutoReload  : true,
 			// Implicit Events
-			defaultEvent             : "Echo.index",
+			defaultEvent             : "Display.Main", // + Marked for Change: This should be the  Default Event Handler
 			requestStartHandler      : "Main.onRequestStart",
 			requestEndHandler        : "",
 			applicationStartHandler  : "Main.onAppInit",
@@ -42,7 +42,7 @@
 			controllerDecorator      : "",
 			// Error/Exception Handling
 			invalidHTTPMethodHandler : "",
-			exceptionHandler         : "Echo.onError",
+			exceptionHandler         : "Display.Error",
 			invalidEventHandler      : "",
 			customErrorTemplate      : "",
 			// Application Aspects
@@ -61,12 +61,9 @@
 		 * --------------------------------------------------------------------------
 		 */
 		settings = {
-			"primaryDatasource"   : getSystemSetting( "PRIMARY_DB_DATABASE", "" ),
-			"secondaryDatasource" : getSystemSetting( "SECONDARY_DB_1_DATABASE", "" )
-			// ,'tertiaryDatasource': getSystemSetting(
-			// 	 'SECONDARY_DB_2_DATABASE'
-			// 	,''
-			// )
+			"primaryDatasource"    : getSystemSetting( "PRIMARY_DB_DATABASE", "" ), // ilytat_blog
+			"secondaryDatasource"  : getSystemSetting( "SECONDARY_DB_1_DATABASE", "" ), // utility
+			"secondaryDatasource2" : getSystemSetting( "SECONDARY_DB_2_DATABASE", "" ) // devbook
 		};
 
 		/**

@@ -1,0 +1,43 @@
+@import url("./variables.css");
+
+
+.card {
+	background-color: var(--card-bg-color);
+	border: 1px solid var(--border-color);
+	border-radius: 5px;
+	height: 25rem;
+	margin-bottom: 1rem;
+	overflow: auto;
+	padding: 1.75rem;
+	width: 20rem;
+}
+
+.card-title {
+	color: var(--card-title-color);
+	color: var(--card-title-text-color);
+	font-size: 1.5rem;
+	font-weight: bold;
+	margin: auto;
+	padding: .5rem;
+}
+
+.card-description {
+	margin: auto;
+	padding: .5rem;
+}
+
+.card-body {
+	display: grid;
+ 	grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+	gap: 10px;
+	padding: 1rem;
+}
+
+.card-display {
+	display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+    gap: 5rem;
+    padding: 3rem;
+    justify-items: center;
+    align-items: center;
+}

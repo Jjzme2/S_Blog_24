@@ -7,32 +7,77 @@
  */
 component singleton accessors="true" name="BaseServer" {
 
-	property name="populator" inject="wirebox:populator";
-	property name="wirebox"   inject="Wirebox";
+	// property name="populator" inject="wirebox:populator";
+	// property name="wirebox"   inject="Wirebox";
 
 	property name="utils" inject="UtilityService";
 
 	property name="objectUtil" inject="WireboxService";
 
-
-	// public AccessObject function getEmptyAccessObject() {
-	// 	return new models.ServerModels.AccessObject();
+	// public any function init(){
+	// 	return this;
 	// }
-
-	public any function init(){
-		return this;
-	}
-
-	/**
-	 * Helper Functions
-	 */
 
 	/**
 	 * Instantiate a ServerResponse object.
 	 */
 	public ServerResponse function serverResponse(){
-		var newResponse = utils.getWireboxUtils().getObject( "ServerResponse" );
+		var newResponse = utils
+			.getWireboxUtils()
+			.getObject( "ServerResponse" );
 		return newResponse;
+	}
+
+
+	/**
+	 * --------------------------------------------------------
+	 * Helper Functions
+	 * --------------------------------------------------------
+	 */
+
+	/**
+	 * Evaluate the records from the query handler.
+	 *
+	 * @param {ServerResponse} res        Response object.
+	 * @param {QueryHandler}   qryHandler Query handler object.
+	 * @param {Number}         records    Number of records.
+	 */
+	public ServerResponse function evaluateRecordsFromQueryHandler(
+		required ServerResponse res,
+		required QueryHandler qryHandler,
+		required Number records
+	){
+		switch ( records ) {
+			case 0:
+				res.addMessage( "No records found." );
+				res.setData( [] );
+				break;
+			case 1:
+				res.addMessage( "Found one record in BaseServer.getRecordsByActivity" );
+				res.setData( [ qryHandler.getAsEntity( this.getEmpty() ) ] );
+				break;
+			default:
+				res.addMessage( "Found #records# records in BaseServer.getRecordsByActivity" );
+				res.setData( qryHandler.getArrayOfObjects( this.getEmpty() ) );
+				break;
+		}
+		return res;
+	}
+
+	private function createResponseFromError( any e, required ServerResponse res ){
+		res.addMessage( "Error Message: #e.message#" );
+		res.addMessage( "Error Details: #e.detail#" );
+		// additional, code, Detail, ErrorCode, Extended_Info, ExtendedInfo, Message, StackTrace, TagContext, type
+		for ( context in e.TagContext ) {
+			var msg = "
+				|LOCATION|       = #context.Template# --
+				|LINE|           = #context.Line# --
+				|CODEPRINTPLAIN| = #context.CodePrintPlain#
+			";
+			res.addMessage( msg );
+		}
+		res.addMessage( "Error Details: #e.message#" );
+		res.setSuccess( false );
 	}
 
 	/**
@@ -49,102 +94,57 @@ component singleton accessors="true" name="BaseServer" {
 			caller = "BaseServer.getRecordsByActivity"
 		);
 
-		// Get the Accessor Object
 		try {
 			var qryHandler = accessPoint.getByActivityStatus( status );
-			var records    = qryHandler.getRecordCount();
-
-			if ( records > 1 ) {
-				res.addMessage( "Found #records# records in BaseServer.getRecordsByActivity" );
-				res.setData( qryHandler.getArrayOfObjects( this.getEmpty() ) );
-			} else if ( records == 1 ) {
-				res.addMessage( "Found one record in BaseServer.getRecordsByActivity" );
-				res.setData( [ qryHandler.getAsEntity( this.getEmpty() ) ] );
-			} else {
-				res.addMessage( "No records found." );
-				res.setData( [] );
-			}
+			res            = evaluateRecordsFromQueryHandler( res, qryHandler, qryHandler.getRecordCount() );
 		} catch ( any e ) {
-			// writeDump(var=qryHandler.getSql(), abort=true);
-			// res.addMessage("Sql Statement: #qryHandler.getSql()#");
 			createResponseFromError( e, res );
-			// Handle the error as appropriate for your application.
-			// Logging or notifying administrators would be a good practice.
 		}
-		// Log or handle the result in a way suitable for your application.
-		// Avoid using writeDump in production for security and performance reasons.
-		// writeDump(var=res, abort=true)
 		return res;
 	}
 
 	public ServerResponse function getRecordById( required string id, required string dataServerName ){
 		var res = serverResponse().init( server = arguments.dataServerName, caller = "BaseServer.getRecordById" );
 
-		// Get the Accessor Object
 		try {
 			var qryHandler = accessPoint.getById( id );
-			var records    = qryHandler.getRecordCount();
-
-			if ( records > 1 ) {
-				res.addMessage( "Found #records# records in BaseServer.getRecordById" );
-				res.setData( qryHandler.getArrayOfObjects( this.getEmpty() ) );
-			} else if ( records == 1 ) {
-				res.addMessage( "Found one record in BaseServer.getRecordById" );
-				res.setData( [ qryHandler.getAsEntity( this.getEmpty() ) ] );
-			} else {
-				res.addMessage( "No records found." );
-				res.setData( [] );
-			}
+			res            = evaluateRecordsFromQueryHandler( res, qryHandler, qryHandler.getRecordCount() );
 		} catch ( any e ) {
-			// writeDump(var=qryHandler.getSql(), abort=true);
-			// res.addMessage("Sql Statement: #qryHandler.getSql()#");
 			createResponseFromError( e, res );
-			// Handle the error as appropriate for your application.
-			// Logging or notifying administrators would be a good practice.
 		}
-		// Log or handle the result in a way suitable for your application.
-		// Avoid using writeDump in production for security and performance reasons.
-		// writeDump(var=res, abort=true)
 		return res;
 	}
 
 
-	public ServerResponse function create( required any dataServerName, required any payload )
-	{
+	public ServerResponse function create( required any dataServerName, required any payload ){
 		var res = serverResponse().init( server = arguments.dataServerName, caller = "BaseServer.create" );
 
-		var payloadAsDTO = populator.populateFromStruct( target=this.getEmpty(), memento=payload );
+		var payloadAsDTO = utils
+			.getWireboxUtils()
+			.getPopulator()
+			.populateFromStruct( target = this.getEmpty(), memento = payload );
 
-		// writeDump(var=payloadAsDTO, abort=true)
-
-		// Get the Accessor Object
 		try {
 			var qryHandler = accessPoint.create( payloadAsDTO );
-			return getRecordById(payload.id, dataServerName);
+			return getRecordById( payload.id, dataServerName );
 		} catch ( any e ) {
 			createResponseFromError( e, res );
 		}
-		// Log or handle the result in a way suitable for your application.
-		// Avoid using writeDump in production for security and performance reasons.
-		// writeDump(var=res, abort=true)
 		return res;
 	}
 
+	public ServerResponse function deactivate( required any dataServerName, required string id ){
+		var res = serverResponse().init( server = arguments.dataServerName, caller = "BaseServer.deactivate" );
 
-	private function createResponseFromError( any e, required ServerResponse res ){
-		res.addMessage( "Error Message: #e.message#" );
-		res.addMessage( "Error Details: #e.detail#" );
-		// additional, code, Detail, ErrorCode, Extended_Info, ExtendedInfo, Message, StackTrace, TagContext, type
-		for ( context in e.TagContext ) {
-			var msg = "
-				|LOCATION|       = #context.Template# --
-				|LINE|           = #context.Line# --
-				|CODEPRINTPLAIN| = #context.CodePrintPlain#
-			";
-			res.addMessage( msg );
+
+		try {
+			var qryHandler = accessPoint.setActive( entityId = id, active = 0 );
+
+			return getRecordById( id, dataServerName );
+		} catch ( any e ) {
+			createResponseFromError( e, res );
 		}
-		res.addMessage( "Error Details: #e.message#" );
-		res.setSuccess( false );
+		return res;
 	}
 
 }

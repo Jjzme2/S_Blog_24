@@ -1,0 +1,31 @@
+@import url(variables.css);
+
+body {
+	background-color: var(--primary-bg-color);
+	color: var(--primary-text-color);
+	font-family: var(--font-family);
+	font-size: var(--font-size);
+}
+
+a {
+	color: var(--secondary-text-color);
+}
+
+.navbar {
+	background-color: var(--navbar-bg-color);
+}
+
+.navbar-brand {
+	color: var(--primary-text-color);
+}
+
+.page-container {
+	height: 100%;
+	margin: .5rem auto;
+	width: 95%;
+}
+
+.page-header {
+	border-bottom: 1px solid var(--border-color);
+	margin-bottom: 1rem;
+}

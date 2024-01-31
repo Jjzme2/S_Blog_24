@@ -18,4 +18,5 @@ component name="EncryptionService" {
 	string function generateSalt( rounds ){
 		return BCrypt.generateSalt();
 	}
+
 }

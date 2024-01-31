@@ -1,0 +1,89 @@
+---------------------------------------------
+Level: Error
+Source: NotesHandler
+Timestamp: 01-31-2024_02:44:52 PM
+Messages: [
+The Server Response Failed. This was called from `BaseServer.getRecordsByActivity`,Served by Notes,Error Message: ["note Access GETBYACTIVITYSTATUS","{\"errorMessage\":\"Table 'ilytat_blog.notes' doesn't exist\",\"customMessage\":\"Error occurred in note Access GET.\"}"],Error Details: ,
+				|LOCATION|       = C:\Users\Jjzet\Desktop\S_Blog_24\_gateway\app\NoteAccess.cfc --
+				|LINE|           = 47 --
+				|CODEPRINTPLAIN| = 45: 		<cfcatch type="any">
+46: 			<cfset var messages = ["note Access GETBYACTIVITYSTATUS", cfcatch.message]>
+47: 			<cfthrow type="CustomError" message=#serializeJSON(messages)#>
+48: 		</cfcatch>
+49: 		</cftry>
+
+			,
+				|LOCATION|       = C:\Users\Jjzet\Desktop\S_Blog_24\_gateway\app\BaseServer.cfc --
+				|LINE|           = 98 --
+				|CODEPRINTPLAIN| = 96: 
+97: 		try {
+98: 			var qryHandler = accessPoint.getByActivityStatus( status );
+99: 			res            = evaluateRecordsFromQueryHandler( res, qryHandler, qryHandler.getRecordCount() );
+100: 		} catch ( any e ) {
+
+			,
+				|LOCATION|       = C:\Users\Jjzet\Desktop\S_Blog_24\handlers\BaseHandler.cfc --
+				|LINE|           = 84 --
+				|CODEPRINTPLAIN| = 82: 		try {
+83: 			var serverResponse =
+84: 			dataServer.getRecordsByActivity( status = activeStatus, dataServerName = variables.dataServerName );
+85: 
+86: 			if ( serverResponse.getSuccess() ) {
+
+			,
+				|LOCATION|       = C:\Users\Jjzet\Desktop\S_Blog_24\coldbox\system\RestHandler.cfc --
+				|LINE|           = 60 --
+				|CODEPRINTPLAIN| = 58: 			}
+59: 			// Execute action
+60: 			var actionResults = arguments.targetAction( argumentCollection = actionArgs );
+61: 		}
+62: 		// Auth Issues
+
+			,
+				|LOCATION|       = C:\Users\Jjzet\Desktop\S_Blog_24\coldbox\system\web\Controller.cfc --
+				|LINE|           = 1074 --
+				|CODEPRINTPLAIN| = 1072: 								.getMethod()
+1073: 						],
+1074: 						eventArguments = arguments.eventArguments
+1075: 					);
+1076: 				} else {
+
+			,
+				|LOCATION|       = C:\Users\Jjzet\Desktop\S_Blog_24\coldbox\system\web\Controller.cfc --
+				|LINE|           = 734 --
+				|CODEPRINTPLAIN| = 732: 
+733: 		// Execute our event
+734: 		var results = _runEvent( argumentCollection = arguments );
+735: 
+736: 		// Do we have an object coming back?
+
+			,
+				|LOCATION|       = C:\Users\Jjzet\Desktop\S_Blog_24\coldbox\system\Bootstrap.cfc --
+				|LINE|           = 302 --
+				|CODEPRINTPLAIN| = 300: 				// ****** EXECUTE MAIN EVENT *******/
+301: 				if ( NOT event.getIsNoExecution() ) {
+302: 					local.refResults.results = cbController.runEvent( defaultEvent = true );
+303: 				}
+304: 				// ****** RENDERING PROCEDURES *******/
+
+			,
+				|LOCATION|       = C:\Users\Jjzet\Desktop\S_Blog_24\coldbox\system\Bootstrap.cfc --
+				|LINE|           = 520 --
+				|CODEPRINTPLAIN| = 518: 		// Process A ColdBox Request Only
+519: 		if ( findNoCase( "index.cfm", listLast( arguments.targetPage, "/" ) ) ) {
+520: 			processColdBoxRequest();
+521: 		}
+522: 		return true;
+
+			,
+				|LOCATION|       = C:\Users\Jjzet\Desktop\S_Blog_24\Application.cfc --
+				|LINE|           = 105 --
+				|CODEPRINTPLAIN| = 103: 		// Process ColdBox Request
+104: 		application.cbBootstrap
+105: 			.onRequestStart( arguments.targetPage );
+106: 		return true;
+107: 	}
+
+			,Error Details: ["note Access GETBYACTIVITYSTATUS","{\"errorMessage\":\"Table 'ilytat_blog.notes' doesn't exist\",\"customMessage\":\"Error occurred in note Access GET.\"}"]
+]
+--------------------------------------------- 

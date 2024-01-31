@@ -102,8 +102,8 @@ component accessors="true" {
 	function read(){
 		return {
 			"id"          : getId(),
-			"createdOn"   : getCreatedOn().Format('yyyy-mm-dd'),
-			"modifiedOn"  : getModifiedOn().Format('yyyy-mm-dd'),
+			"createdOn"   : getCreatedOn().Format( "yyyy-mm-dd" ),
+			"modifiedOn"  : getModifiedOn().Format( "yyyy-mm-dd" ),
 			"active"      : getActive(),
 			"title"       : getTitle(),
 			"description" : getDescription(),

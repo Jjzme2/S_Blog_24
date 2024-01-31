@@ -1,15 +1,16 @@
 /**
- * @Author Jj Zettler
- * @Description This will be the access point for the postCategory table.
- * @date 12/9/2023
- * @version 0.1
- * @FindOBJECT postCategory
- * @FindCOLUMNS t.id
  * ,t.created_on
  * ,t.modified_on
  * ,t.active
  * ,t.name
  * ,t.description
+ *
+ * @Author      Jj Zettler
+ * @Description This will be the access point for the postCategory table.
+ * @date        12/9/2023
+ * @version     0.1
+ * @FindOBJECT  postCategory
+ * @FindCOLUMNS t.id
  */
 
 // cfformat-ignore-start
@@ -24,11 +25,11 @@
 	 --->
 
 	<cffunction
-		name="getByActivityStatus"
-		access="package"
+		name      ="getByActivityStatus"
+		access    ="package"
 		returntype="QueryHandler"
-		output="false"
-		hint="Gets a QueryHandler object with the data retrieved from the database."
+		output    ="false"
+		hint      ="Gets a QueryHandler object with the data retrieved from the database."
 	>
 
 		<cfargument name="status" type="boolean" required="true">
@@ -37,9 +38,9 @@
 			<!--- Use the private helper method to get the data we will need --->
 			<cfset var qry = get(
 				searchTerm="active"
-				,sqlType="cf_sql_bit"
-				,searchValue="#arguments.status#"
-				,exactMatch=true
+				,sqlType     ="cf_sql_bit"
+				,searchValue ="#arguments.status#"
+				,exactMatch  =true
 				,showInactive=!arguments.status
 				)>
 		<cfcatch type="any">
@@ -80,9 +81,9 @@
 
 				<cfset var qry = get(
 					searchTerm="id"
-					,sqlType="cf_sql_varchar"
-					,searchValue="#entity.getId()#"
-					,exactMatch=true
+					,sqlType     ="cf_sql_varchar"
+					,searchValue ="#entity.getId()#"
+					,exactMatch  =true
 					,showInactive=true
 					)>
 					<cfreturn new QueryHandler( qry )>
@@ -141,7 +142,7 @@
 			<cfcatch type="any">
 				<cfset var message = {
 					"customMessage": "Error occurred in postCategory Access GET.",
-					"errorMessage": "#cfcatch.message#" }>
+					"errorMessage" : "#cfcatch.message#" }>
 
 				<cfthrow type="CustomError" message=#serializeJSON(message)#>
 

@@ -1,23 +1,24 @@
 /**
- * @Author Jj Zettler
+ * @Author      Jj Zettler
  * @Description This will be the service that will handle all the related functions for the postCategory object.
- * @date 12/20/2023
- * @version 0.1
- * @Find = postCategory
+ * @date        12/20/2023
+ * @version     0.1
+ * @Find        = postCategory
  */
-component singleton
+component
+	singleton
 	accessors="true"
-	name="postCategoryServer"
-	extends="BaseServer"
+	name     ="postCategoryServer"
+	extends  ="BaseServer"
 {
 
 	property name="accessPoint" inject="PostCategoryAccess";
 
 	/**
-	* ----------------------------------------------------------------------------------------------
-    * *OBJECT INSTANTIATION
-	* ----------------------------------------------------------------------------------------------
-	*/
+	 * ----------------------------------------------------------------------------------------------
+	 * *OBJECT INSTANTIATION
+	 * ----------------------------------------------------------------------------------------------
+	 */
 
 	/** Private functions for this service. */
 
@@ -26,10 +27,11 @@ component singleton
 
 	/**
 	 * This will get an empty postCategoryDTO.
+	 *
 	 * @return An empty postCategory DTO.
 	 */
-	public postCategoryDTO function getEmpty()
-	{
+	public postCategoryDTO function getEmpty(){
 		return new models.DTO.postCategoryDTO();
 	}
+
 }

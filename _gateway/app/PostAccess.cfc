@@ -54,11 +54,11 @@
 	</cffunction>
 
 	<cffunction
-		name="getById"
-		access="package"
+		name      ="getById"
+		access    ="package"
 		returntype="QueryHandler"
-		output=false
-		hint="Gets a QueryHandler with the data given an id.">
+		output    =false
+		hint      ="Gets a QueryHandler with the data given an id.">
 
 		<cfargument name="id" type="string" required="true">
 

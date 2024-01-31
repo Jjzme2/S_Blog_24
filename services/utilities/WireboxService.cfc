@@ -1,6 +1,5 @@
-component
-	name="WireboxService"
-{
+component name="WireboxService" {
+
 	public any function getWirebox(){
 		try {
 			return application.wirebox;
@@ -18,13 +17,15 @@ component
 				"Error Message"  : e.message
 			}
 			throw( serializeJSON( message ) );
-			}
+		}
 	}
 
 	/**
 	 * This method will return the Wirebox populator instance.
 	 */
-	public function getPopulator() {
-		return getWirebox().getPopulator();
+	public function getPopulator(){
+		return getWirebox().getObjectPopulator();
+		// return injector.getObjectPopulator();
 	}
+
 }

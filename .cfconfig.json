@@ -50,6 +50,22 @@
 			"port": "${SECONDARY_DB_1_PORT:3306}",
 			"username": "${SECONDARY_DB_1_USER:root}",
 			"storage": "false"
+		},
+		"${SECONDARY_DB_2_DATABASE}": {
+			"bundleName": "${SECONDARY_DB_2_BUNDLENAME}",
+			"bundleVersion": "${SECONDARY_DB_2_BUNDLEVERSION}",
+			"class": "${SECONDARY_DB_2_CLASS}",
+			"connectionLimit": "100",
+			"connectionTimeout": "1",
+			"custom": "useUnicode=true&characterEncoding=UTF8&serverTimezone=UTC&useLegacyDatetimeCode=true&autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true",
+			"database": "${SECONDARY_DB_2_DATABASE}",
+			"dbdriver": "${SECONDARY_DB_2_DRIVER:MySQL}",
+			"dsn": "jdbc:mysql://${SECONDARY_DB_2_HOST}:${SECONDARY_DB_2_PORT}/${SECONDARY_DB_2_DATABASE}",
+			"host": "${SECONDARY_DB_2_HOST:}",
+			"password": "${SECONDARY_DB_2_PASSWORD}",
+			"port": "${SECONDARY_DB_2_PORT:3306}",
+			"username": "${SECONDARY_DB_2_USER:root}",
+			"storage": "false"
 		}
 	},
 	"whitespaceManagement": "white-space-pref"

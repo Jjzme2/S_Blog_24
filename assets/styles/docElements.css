@@ -1,0 +1,51 @@
+@import url("./variables.css");
+
+.doc-content {
+	/* border: 1px solid var(--border-color); Delete this later? */
+	margin: 3rem auto;
+	text-align: center;
+	width: 60%;
+}
+
+.doc-content h1 {
+	padding-bottom: 5rem;
+}
+
+.doc-content h2:not(:first-of-type) {
+	padding-top: 15rem;
+}
+
+.doc-content table {
+	border-collapse: collapse;
+	margin: 2rem auto;
+	width: 80%;
+}
+
+.doc-content table th {
+	border: 1px solid var(--border-color);
+	padding: .5rem;
+}
+
+.doc-content table td {
+	border: 1px solid var(--border-color);
+	padding: .5rem;
+}
+
+.doc-content table tr:nth-child(even) {
+	background-color: var(--markdown-table-even-row-color);
+	color: var(--markdown-table-even-text-color);
+}
+
+.doc-content table tr:nth-child(odd) {
+	background-color: var(--markdown-table-odd-row-color);
+	color: var(--markdown-table-odd-text-color);
+}
+
+.doc-header {
+	background-color: var(--header-background-color);
+	border-bottom: 1px solid var(--border-color);
+	color: var(--header-text-color);
+	font-size: 1.5rem;
+	padding: 1rem;
+	text-align: center;
+}

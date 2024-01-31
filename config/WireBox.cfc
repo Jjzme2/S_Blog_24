@@ -43,7 +43,6 @@
 		map( "Message" ).to( "models.ServerModels.Common.Message" );
 
 		map( "ErrorLog" ).to( "models.ServerModels.Logs.ErrorLog" );
-
 	}
 
 }

@@ -15,6 +15,7 @@
 	/* Properties for tableName and dataSource */
 	<cfset tableName  = ''> /* Defined in the extending component */
 	<cfset dataSource = application.cbController.getSetting( 'primaryDatasource' )>
+
 	<cfset converter  = createObject( 'services.utilities.ConversionService' )>
 	<cfset objectUtil = createObject( 'services.utilities.WireboxService' )>
 
@@ -31,7 +32,17 @@
 		output    ='false'
 		hint      ='Returns all rows within the specified table.'>
 
-		<cfargument name='order' type='struct' required='false' default='#{}#'>
+		<cfargument name='order' type='struct' required='false' default='#{
+			'column'    : 'created_on'
+			,'direction': 'desc'
+		}#'>
+
+		<cfif structKeyExists(arguments.order, 'column')>
+			<!--- Check the value for direction. --->
+			<cfif not listFindNoCase('asc,desc', arguments.order.direction)>
+				<cfthrow type='CustomError' message='Invalid order direction. Please use "ASC" and "DESC" (case insensitive) for direction values.'>
+			</cfif>
+		</cfif>
 
 		<cftry>
 			<cfquery name='queryResult' datasource='#variables.dataSource#'>
@@ -45,11 +56,13 @@
 			<cfset var result = lowerCaseColumns(query=queryResult)>
 
 			<cfcatch type='CustomError'>
-				<cfset var errorMessage = {
-					'customMessage': 'Error occurred in LIST.',
-					'errorMessage' : 'Custom error message here'
-				}>
-				<cfthrow type='CustomError' message='#SerializeJSON(errorMessage)#'>
+				<cfset var errorMessage = createError (
+						error=cfcatch
+						,location='LIST'
+					)
+				>
+
+				<cfthrow type = 'CustomError' message = '#SerializeJSON( errorMessage )#'>
 			</cfcatch>
 		</cftry>
 
@@ -60,24 +73,28 @@
 
 	/* Set the active status of an entry in the database */
 	<cffunction name = 'setActive'
-		access = 'package'
-		output = 'false'
-		hint   = 'Sets the active status of an entry in the database'>
+		access    = 'package'
+		returntype='Boolean'
+		output    = 'false'
+		hint      = 'Sets the active status of an entry in the database'>
 
 		<cfargument name = 'entityId' type = 'string' required = 'true'>
 		<cfargument name = 'active' type = 'boolean' required = 'true'>
 
 		<cftry>
-			<cfquery datasource = '#variables.dataSource#'>
+			<cfquery datasource = '#datasource#'>
 				UPDATE #variables.tableName# t
 				SET t.active =  <cfqueryparam value = '#arguments.active#' cfsqltype = 'cf_sql_bit'>
 				WHERE t.id   =  <cfqueryparam value = '#arguments.entityId#' cfsqltype = 'cf_sql_varchar'>
 			</cfquery>
+			<cfreturn true>
 			<cfcatch type = 'any'>
-				<cfset var errorMessage = {
-					'customMessage': 'Error occurred in SETACTIVE.'
-					,'errorMessage' : '#cfcatch.message#'
-				}>
+				<cfset var errorMessage = createError (
+						error=cfcatch
+						,location='SETACTIVE'
+					)
+				>
+
 				<cfthrow type = 'CustomError' message = '#SerializeJSON( errorMessage )#'>
 			</cfcatch>
 		</cftry>
@@ -97,10 +114,12 @@
 				WHERE t.id =  <cfqueryparam value = '#arguments.entityId#' cfsqltype = 'cf_sql_varchar'>
 			</cfquery>
 			<cfcatch type = 'any'>
-				<cfset var errorMessage = {
-					'customMessage': 'Error occurred in DELETEBYID.'
-					,'errorMessage' : '#cfcatch.message#'
-				}>
+				<cfset var errorMessage = createError (
+						error=cfcatch
+						,location='DELETEBYID'
+					)
+				>
+
 				<cfthrow type = 'CustomError' message = '#SerializeJSON( errorMessage )#'>
 			</cfcatch>
 		</cftry>
@@ -126,11 +145,13 @@
 			</cfloop>
 
 			<cfcatch>
-				<cfset var errorMessage = {
-					'customMessage': 'Error occurred in LOWERCASECOLUMNS.'
-					,'errorMessage' : '#cfcatch.message#'
-				}>
-				<cfthrow type = 'CustomError' message = '#SerializeJSON( errorMessage )#'>
+			<cfset var errorMessage = createError (
+					error=cfcatch
+					,location='LOWERCASECOLUMNS'
+				)
+			>
+
+			<cfthrow type = 'CustomError' message = '#SerializeJSON( errorMessage )#'>
 			</cfcatch>
 		</cftry>
 
@@ -152,13 +173,32 @@
 				<cfset data[fieldName][currentRow] = deserializeJSON(data[fieldName][currentRow])>
 			</cfloop>
 		<cfcatch>
-			<cfset var errorMessage = {
-				'customMessage': 'Error occurred in SERIALIZEFIELD.'
-				,'errorMessage' : '#cfcatch.message#'
-			}>
+			<cfset var errorMessage = createError (
+					error=cfcatch
+					,location='SERIALIZEJSONARRAY'
+				)
+			>
+
 			<cfthrow type = 'CustomError' message = '#SerializeJSON( errorMessage )#'>
 		</cfcatch>
 		</cftry>
+	</cffunction>
+
+	<cffunction
+		name       = 'createError'
+		access     = 'package'
+		returntype = 'struct'
+		output     = 'false'
+		hint       = 'Creates an error object for use in throwing errors'>
+
+		<cfargument name = 'error' type = 'any' required = 'true'>
+		<cfargument name = 'location' type = 'string' required = 'true'>
+
+		<cfset var errorMessage = {
+			'customMessage': 'Error occurred in #arguments.location#.'
+			,'errorMessage' : '#cfcatch.message#'
+		}>
+		<cfreturn errorMessage>
 	</cffunction>
 </cfcomponent>
 
